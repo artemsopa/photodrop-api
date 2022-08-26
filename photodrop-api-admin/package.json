@@ -14,7 +14,14 @@
   "license": "ISC",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.102",
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
     "aws-sdk": "^2.1203.0",
+    "eslint": "^8.22.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "serverless": "^3.22.0",
     "serverless-export-env": "^2.2.0",
     "serverless-offline": "^9.2.6",
@@ -24,6 +31,9 @@
     "webpack": "^5.74.0"
   },
   "dependencies": {
-    "dotenv": "^16.0.1"
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "typeorm": "^0.3.7"
   }
 }
