@@ -1,0 +1,42 @@
+service: photodrop-api-admin
+frameworkVersion: '3'
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-export-env
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-central-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    DB_HOST: ${env:RDS_DB_HOST}
+    DB_PORT: ${env:RDS_DB_PORT}
+    DB_USER: ${env:RDS_DB_USER}
+    DB_PASSWORD: ${env:RDS_DB_PASSWORD}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - ec2:CreateNetworkInterface
+        - ec2:DescribeNetworkInterfaces
+        - ec2:DeleteNetworkInterface
+      Resource:
+        - "*"
+
+functions:
+  signIn:
+    handler: ./src/index.signIn
+    events:
+      - http:
+          path: /auth/sign-in
+          method: post
+          cors: true
+  signUp:
+    handler: ./src/index.signUp
+    events:
+      - http:
+          path: /auth/sign-up
+          method: post
+          cors: true
