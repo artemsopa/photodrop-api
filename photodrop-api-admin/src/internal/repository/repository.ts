@@ -7,6 +7,7 @@ import ImagesRepo from './images.repo';
 import AlbumsRepo from './albums.repo';
 
 export interface IUsersRepo {
+  getAll(): Promise<User[]>;
   isLoginExists(login: string): Promise<boolean>
   isEmailExists(email: string): Promise<boolean>;
   getByLogin(login: string): Promise<User | null>;
