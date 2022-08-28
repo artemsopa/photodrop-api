@@ -10,7 +10,6 @@ import AlbumsRoute from './routes/albums.route';
 import { AuthManager } from '../../pkg/auth/jwt';
 import ApiError from '../domain/error';
 import { idSchema } from './routes/joi-schemas/auth.schema';
-import UsersRoute from './routes/users.route';
 
 export interface AuthRequest extends Request {
   userId?: string;
@@ -34,8 +33,7 @@ class Handler {
   private initRoutes() {
     return Router()
       .use('/auth', new AuthRoute(this.services.auth).initRoutes())
-      .use('/albums', this.authMiddleware, new AlbumsRoute(this.services.almubs).initRoutes())
-      .use('/users', new UsersRoute(this.services.users).initRoutes());
+      .use('/albums', this.authMiddleware, new AlbumsRoute(this.services.almubs).initRoutes());
   }
 
   private authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
