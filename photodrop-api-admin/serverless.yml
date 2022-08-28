@@ -1,5 +1,6 @@
 service: photodrop-api-admin
 frameworkVersion: '3'
+useDotenv: true
 
 plugins:
   - serverless-webpack
@@ -12,10 +13,13 @@ provider:
   region: eu-central-1
   stage: ${opt:stage, 'dev'}
   environment:
-    DB_HOST: ${env:RDS_DB_HOST}
-    DB_PORT: ${env:RDS_DB_PORT}
-    DB_USER: ${env:RDS_DB_USER}
-    DB_PASSWORD: ${env:RDS_DB_PASSWORD}
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USER: ${env:DB_USER}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    HASHER_SALT: ${env:HASHER_SALT}
+    JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
+    JWT_TTL: ${env:JWT_TTL}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -26,17 +30,21 @@ provider:
         - "*"
 
 functions:
-  signIn:
-    handler: ./src/index.signIn
+  api:
+    handler: ./src/index.handler
     events:
       - http:
-          path: /auth/sign-in
-          method: post
+          path: /
+          method: get
           cors: true
-  signUp:
-    handler: ./src/index.signUp
-    events:
       - http:
-          path: /auth/sign-up
-          method: post
+          path: /{proxy+}
+          method: any
           cors: true
+    vpc:
+      securityGroupIds:
+        - sg-0fe96f314854bde70
+      subnetIds:
+        - subnet-0f9af9f93b661a6ad
+        - subnet-0315b540cb1a0f6a0
+        - subnet-0f877550548ce2fa1
