@@ -1,3 +1,4 @@
+import ApiError from '../domain/error';
 import Album from '../repository/entities/album';
 import { IAlbumsRepo } from '../repository/repository';
 import { AlbumInfo, AlbumInput } from './dtos/album';
@@ -18,6 +19,7 @@ class AlbumsService implements IAlbumsService {
   }
 
   async create(userId: string, album: AlbumInput): Promise<void> {
+    if (await this.albumsRepo.isAlbumExists(userId, album.title)) throw new ApiError(400, `Album ${album.title} already exists!`);
     await this.albumsRepo.create(new Album(album.title, album.icon, album.location, userId));
   }
 }
