@@ -9,8 +9,8 @@ class AlbumsRepo implements IAlbumsRepo {
     this.repo = ds.getRepository(Album);
   }
 
-  async getAll(id: string): Promise<Album[]> {
-    return await this.repo.find({ where: { id } });
+  async getAll(userId: string): Promise<Album[]> {
+    return await this.repo.find({ where: { userId } });
   }
 
   async isAlbumExists(userId: string, title: string): Promise<boolean> {
