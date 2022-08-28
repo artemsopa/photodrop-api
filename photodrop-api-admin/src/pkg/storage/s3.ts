@@ -6,7 +6,7 @@ export interface IS3 {
     // uploadFileToS3(presignedPostData: AWS.S3.PresignedPost, title: string, buffer: Buffer): Promise<void>;
   }
 
-class S3 implements IS3 {
+export class S3 implements IS3 {
   constructor(private bucket: AWS.S3, private bucketName: string) {
     this.bucket = new AWS.S3();
     this.bucketName = bucketName;
@@ -54,5 +54,3 @@ class S3 implements IS3 {
 //     });
 //   }
 }
-
-export default S3;
