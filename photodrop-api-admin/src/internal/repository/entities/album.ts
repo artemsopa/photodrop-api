@@ -1,5 +1,5 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, PrimaryColumn, OneToMany,
+  Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany,
 } from 'typeorm';
 import Image from './image';
 import User from './user';

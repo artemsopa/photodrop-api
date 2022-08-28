@@ -1,7 +1,7 @@
 import initConfigs from '../configs/config';
 import Repositories from '../internal/repository/repository';
 import Services, { Deps } from '../internal/service/service';
-import { JwtManager } from '../pkg/auth/jwt';
+import { JwtManager } from '../pkg/auth/jwt.auth';
 import initDB from '../pkg/database/database';
 import Handler from '../internal/delivery/handler';
 

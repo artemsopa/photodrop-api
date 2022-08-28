@@ -1,5 +1,5 @@
 import {
-  Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn,
+  Entity, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
 import Album from './album';
 

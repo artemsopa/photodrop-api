@@ -1,10 +1,10 @@
 import { IAuthService } from './service';
-import { AuthManager } from '../../pkg/auth/jwt';
+import { IAuthManager } from '../../pkg/auth/auth';
 import { IUsersRepo } from '../repository/repository';
 import ApiError from '../domain/error';
 
 class AuthService implements IAuthService {
-  constructor(private usersRepo: IUsersRepo, private authManager: AuthManager) {
+  constructor(private usersRepo: IUsersRepo, private authManager: IAuthManager) {
     this.usersRepo = usersRepo;
     this.authManager = authManager;
   }

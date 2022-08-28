@@ -1,4 +1,4 @@
-import { AuthManager } from '../../pkg/auth/jwt';
+import { IAuthManager } from '../../pkg/auth/auth';
 import Repositories from '../repository/repository';
 import { AlbumInfo, AlbumInput } from './dtos/album';
 import { ImageInput, ImageInfo } from './dtos/image';
@@ -22,8 +22,8 @@ export interface IImagesService {
 
 export class Deps {
   repos: Repositories;
-  authManager: AuthManager;
-  constructor(repos: Repositories, authManager: AuthManager) {
+  authManager: IAuthManager;
+  constructor(repos: Repositories, authManager: IAuthManager) {
     this.repos = repos;
     this.authManager = authManager;
   }

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import User from '../../internal/repository/entities/user';
 import Album from '../../internal/repository/entities/album';
@@ -17,7 +18,7 @@ const initDB = (
     username,
     password,
     database,
-    // entities: [User, Album, Image],
+    entities: [User, Album, Image],
     synchronize: false,
     logging: true,
   });

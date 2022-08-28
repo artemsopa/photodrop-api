@@ -1,15 +1,7 @@
 import jwt from 'jsonwebtoken';
+import { IAuthManager, JwtPlaceholder } from './auth';
 
-export interface AuthManager {
-    newToken(userID: string): string;
-    verifyToken(token: string): string | null;
-}
-
-export interface JwtPlaceholder {
-    userId: string;
-}
-
-export class JwtManager implements AuthManager {
+export class JwtManager implements IAuthManager {
   signingKey: string;
   TTL: string;
 
@@ -21,8 +13,8 @@ export class JwtManager implements AuthManager {
     this.TTL = TTL;
   }
 
-  newToken(userID: string): string {
-    return jwt.sign({ userID }, this.signingKey, { expiresIn: this.TTL });
+  newToken(userId: string): string {
+    return jwt.sign({ userId }, this.signingKey, { expiresIn: this.TTL });
   }
 
   verifyToken(token: string) {
