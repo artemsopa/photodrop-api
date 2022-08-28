@@ -1,10 +1,14 @@
 import { DataSource } from 'typeorm';
+import User from '../../internal/repository/entities/user';
+import Album from '../../internal/repository/entities/album';
+import Image from '../../internal/repository/entities/image';
 
-const initDB = async (
+const initDB = (
   host: string,
   port: number,
   username: string,
   password: string,
+  database: string,
 ) => {
   const appDataSource = new DataSource({
     type: 'mysql',
@@ -12,11 +16,12 @@ const initDB = async (
     port,
     username,
     password,
-    // entities: [Info, Favourite],
-    synchronize: true,
+    database,
+    // entities: [User, Album, Image],
+    synchronize: false,
     logging: true,
   });
-  await appDataSource.initialize();
+  appDataSource.initialize();
   console.log('Database connection successful...');
   return appDataSource;
 };
