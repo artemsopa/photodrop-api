@@ -13,10 +13,10 @@ class AlbumsRepo implements IAlbumsRepo {
     return await this.repo.find({ where: { id } });
   }
 
-  async isAlbumExists(userId: string, id: string): Promise<boolean> {
+  async isAlbumExists(userId: string, title: string): Promise<boolean> {
     const album = await this.repo.findOne({
       where: {
-        id,
+        title,
         userId,
       },
     });

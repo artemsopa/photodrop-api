@@ -15,7 +15,7 @@ export interface IUsersRepo {
 
 export interface IAlbumsRepo {
   getAll(userId: string): Promise<Album[]>;
-  isAlbumExists(userId: string, id: string): Promise<boolean>;
+  isAlbumExists(userId: string, title: string): Promise<boolean>;
   create(album: Album): Promise<void>;
 }
 
