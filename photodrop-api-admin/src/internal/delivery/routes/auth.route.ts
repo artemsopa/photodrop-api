@@ -19,7 +19,7 @@ class AuthRoute {
     try {
       const body = validateSchema(loginSchema, req.body);
       const token = await this.authService.signIn(body.login, body.password);
-      res.status(201).json({ token });
+      res.status(200).json({ token });
     } catch (error) {
       next(error);
     }

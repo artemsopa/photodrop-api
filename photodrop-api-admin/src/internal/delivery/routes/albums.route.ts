@@ -22,7 +22,7 @@ class AlbumsRoute {
     try {
       const userId = this.authMiddleware.getUserId(req);
       const albums = await this.albumsService.getAll(userId);
-      res.status(201).json(albums);
+      res.status(200).json(albums);
     } catch (error) {
       next(error);
     }
