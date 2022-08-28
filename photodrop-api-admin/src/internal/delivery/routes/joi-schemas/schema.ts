@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import ApiError from '../../../../domain/error';
+import ApiError from '../../../domain/error';
 
 const validateSchema = (schema: Joi.Schema, ctx: any) => {
   const { error, value } = schema.validate(ctx, { abortEarly: false });
