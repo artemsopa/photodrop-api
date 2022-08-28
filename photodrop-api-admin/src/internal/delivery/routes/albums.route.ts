@@ -32,8 +32,8 @@ class AlbumsRoute {
     try {
       const userId = this.authMiddleware.getUserId(req);
       const body = validateSchema(albumSchema, req.body);
-      const token = await this.albumsService.create(userId, body);
-      res.status(201).json({ token });
+      await this.albumsService.create(userId, body);
+      res.status(201).json({ message: `Album "${body.title}" successfully created!` });
     } catch (error) {
       next(error);
     }
