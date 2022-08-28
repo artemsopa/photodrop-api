@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
 
-export default interface Hasher {
+export interface Hasher {
     hash(password: string): Promise<string>;
     compare(password: string, hash: string): Promise<boolean>;
 };
 
 export class BcryptHasher implements Hasher {
-  private salt: string;
+  private salt: number;
 
-  constructor(salt: string) {
+  constructor(salt: number) {
     this.salt = salt;
   }
 
