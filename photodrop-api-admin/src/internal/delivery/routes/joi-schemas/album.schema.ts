@@ -1,13 +1,12 @@
 import Joi from 'joi';
 
-export const Schema = Joi.object({
-  login: Joi.string()
-    .min(4)
+export const albumSchema = Joi.object({
+  title: Joi.string()
+    .min(2)
     .max(30)
-    .lowercase()
     .required(),
-  password: Joi.string()
-    .min(6)
-    .max(30)
+  icon: Joi.string()
+    .required(),
+  location: Joi.string()
     .required(),
 });

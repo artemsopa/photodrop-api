@@ -3,6 +3,8 @@ import {
 } from 'express';
 import { AuthRequest, getUserId } from '../handler';
 import { IAlbumsService } from '../../service/service';
+import { albumSchema } from './joi-schemas/album.schema';
+import validateSchema from './joi-schemas/schema';
 
 class AlbumsRoute {
   constructor(private albumsService: IAlbumsService) {
@@ -11,7 +13,8 @@ class AlbumsRoute {
 
   initRoutes() {
     return Router()
-      .get('/', this.getAll.bind(this));
+      .get('/', this.getAll.bind(this))
+      .post('/', this.create.bind(this));
   }
 
   private async getAll(req: AuthRequest, res: Response, next: NextFunction) {
@@ -25,15 +28,14 @@ class AlbumsRoute {
   }
 
   private async create(req: AuthRequest, res: Response, next: NextFunction) {
-    // const userId = await getUserId(req);
-    // // const body = await signInSchema.validateAsync(req.body);
-    // try {
-    //   // if (body.error) throw new ApiError(400, body.error.details[0].message);
-    //   const token = await this.albumsService.create(userId, userId);
-    //   res.status(201).json({ token });
-    // } catch (error) {
-    //   next(error);
-    // }
+    try {
+      const userId = await getUserId(req);
+      const body = validateSchema(albumSchema, req.body);
+      const token = await this.albumsService.create(userId, body);
+      res.status(201).json({ token });
+    } catch (error) {
+      next(error);
+    }
   }
 }
 
