@@ -11,10 +11,15 @@ export class UserInput {
   }
 }
 
-export class UserInfo extends UserInput {
+export class UserInfo {
   id: string;
-  constructor(id: string, login: string, password: string, fullName: string | null, email: string | null) {
-    super(login, password, fullName, email);
+  login: string;
+  fullName: string | null;
+  email: string | null;
+  constructor(id: string, login: string, fullName: string | null, email: string | null) {
     this.id = id;
+    this.login = login;
+    this.fullName = fullName;
+    this.email = email;
   }
 }
