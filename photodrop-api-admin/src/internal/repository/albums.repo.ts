@@ -10,10 +10,7 @@ class AlbumsRepo implements IAlbumsRepo {
   }
 
   async getAll(id: string): Promise<Album[]> {
-    const albums = await this.repo.find({
-      where: { id },
-    });
-    return albums;
+    return await this.repo.find({ where: { id } });
   }
 
   async create(album: Album): Promise<void> {

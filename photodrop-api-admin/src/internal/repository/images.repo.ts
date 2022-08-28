@@ -10,10 +10,7 @@ class ImagesRepo implements IImagesRepo {
   }
 
   async getAllByAlbumId(albumId: string): Promise<Image[]> {
-    const images = await this.repo.find({
-      where: { albumId },
-    });
-    return images;
+    return await this.repo.find({ where: { albumId } });
   }
 
   async create(image: Image): Promise<void> {
