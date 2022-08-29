@@ -1,3 +1,5 @@
+org: artemsopa
+app: photodrop-api-admin
 service: photodrop-api-admin
 frameworkVersion: '3'
 useDotenv: true
@@ -17,6 +19,7 @@ provider:
     DB_PORT: ${env:DB_PORT}
     DB_USER: ${env:DB_USER}
     DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
     JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
     JWT_TTL: ${env:JWT_TTL}
   iamRoleStatements:
@@ -27,6 +30,11 @@ provider:
         - ec2:DeleteNetworkInterface
       Resource:
         - "*"
+
+custom: 
+  webpack: 
+    includeModules: 
+      true
 
 functions:
   api:

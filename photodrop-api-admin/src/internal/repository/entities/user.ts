@@ -3,7 +3,7 @@ import {
 } from 'typeorm';
 import Album from './album';
 
-@Entity()
+@Entity({ name: 'user' })
 export default class User {
   @PrimaryGeneratedColumn('uuid')
     id: string;

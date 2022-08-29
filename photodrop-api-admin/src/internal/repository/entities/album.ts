@@ -4,7 +4,7 @@ import {
 import Image from './image';
 import User from './user';
 
-@Entity()
+@Entity({ name: 'album' })
 export default class Album {
   @PrimaryGeneratedColumn('uuid')
     id: string;

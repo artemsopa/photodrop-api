@@ -19,7 +19,7 @@ const initDB = (
     password,
     database,
     entities: [User, Album, Image],
-    synchronize: false,
+    synchronize: true,
     logging: true,
   });
   appDataSource.initialize();
