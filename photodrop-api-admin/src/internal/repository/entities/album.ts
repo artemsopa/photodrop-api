@@ -13,9 +13,6 @@ export default class Album {
     title: string;
 
   @Column()
-    icon: string;
-
-  @Column()
     location: string;
 
   @Column()
@@ -28,9 +25,8 @@ export default class Album {
   @OneToMany(() => Image, image => image.album)
     images: Image[];
 
-  constructor(title: string, icon: string, location: string, userId: string) {
+  constructor(title: string, location: string, userId: string) {
     this.title = title;
-    this.icon = icon;
     this.location = location;
     this.userId = userId;
   }

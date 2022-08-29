@@ -14,13 +14,12 @@ class AlbumsService implements IAlbumsService {
       item.id,
       item.title,
       item.location,
-      item.icon,
     ));
   }
 
   async create(userId: string, album: AlbumInput): Promise<void> {
     if (await this.albumsRepo.isAlbumExists(userId, album.title)) throw new ApiError(400, `Bad Request! Album ${album.title} already exists!`);
-    await this.albumsRepo.create(new Album(album.title, album.icon, album.location, userId));
+    await this.albumsRepo.create(new Album(album.title, album.location, userId));
   }
 }
 
