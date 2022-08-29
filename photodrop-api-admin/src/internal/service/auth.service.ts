@@ -12,10 +12,10 @@ class AuthService implements IAuthService {
   async signIn(login: string, password: string): Promise<string> {
     const user = await this.usersRepo.getByLogin(login);
     if (!user) {
-      throw new ApiError(401, 'Unauthorized! Incorrect email.');
+      throw new ApiError(401, 'Unauthorized! Incorrect login.');
     }
     if (password !== user.password) {
-      throw new ApiError(401, 'Unauthorized! Incorrect password!');
+      throw new ApiError(401, 'Unauthorized! Incorrect password.');
     }
     return this.authManager.newToken(user.id);
   }
