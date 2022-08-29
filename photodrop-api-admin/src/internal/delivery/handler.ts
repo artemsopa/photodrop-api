@@ -7,6 +7,7 @@ import AuthRoute from './routes/auth.route';
 import AlbumsRoute from './routes/albums.route';
 import { IAuthManager } from '../../pkg/auth/auth';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import UsersRoute from './routes/users.route';
 
 class Handler {
   constructor(private services: Services, private authManager: IAuthManager) {
@@ -27,6 +28,7 @@ class Handler {
     const authMiddleware = new AuthMiddleware(this.authManager);
     return Router()
       .use('/auth', new AuthRoute(this.services.auth).initRoutes())
+      .use('/users', new UsersRoute(this.services.users, authMiddleware).initRoutes())
       .use('/albums', new AlbumsRoute(this.services.almubs, authMiddleware).initRoutes());
   }
 }
