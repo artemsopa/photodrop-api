@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, Not } from 'typeorm';
 import { IUsersRepo } from './repository';
 import User from './entities/user';
 
@@ -7,6 +7,10 @@ class UsersRepo implements IUsersRepo {
 
   constructor(ds: DataSource) {
     this.repo = ds.getRepository(User);
+  }
+
+  async getAll(id: string): Promise<User[]> {
+    return await this.repo.find({ where: { id: Not(id) } });
   }
 
   async isLoginExists(login: string): Promise<boolean> {
