@@ -6,7 +6,7 @@
   "scripts": {
     "start": "serverless offline start --noTimeout",
     "build": "serverless package",
-    "local": "nodemon --exec ts-node src/app/app.ts",
+    "local": "nodemon --exec ts-node src/index.ts",
     "deploy": "sls deploy",
     "deploy-prod": "sls deploy --stage prod"
   },
