@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 
 export interface IS3Storage {
-  getSignedUrl(isPut: boolean, prefix: string, title: string, cType: string): Promise<string>;
+  getSignedUrl(key: string, cType: string): Promise<string>;
 }
 
 export class S3Storage implements IS3Storage {
@@ -12,13 +12,13 @@ export class S3Storage implements IS3Storage {
     });
   }
 
-  async getSignedUrl(isPut: boolean, prefix: string, title: string, cType: string): Promise<string> {
+  async getSignedUrl(key: string, cType: string): Promise<string> {
     const params = {
-      Key: `${prefix}/${title}`,
+      Key: key,
       Bucket: this.bucket,
       ContentType: cType,
       Expires: 30 * 60, // seconds number
     };
-    return await this.s3.getSignedUrlPromise(isPut ? 'putObject' : 'getObject', params);
+    return await this.s3.getSignedUrlPromise('putObject', params);
   }
 }
