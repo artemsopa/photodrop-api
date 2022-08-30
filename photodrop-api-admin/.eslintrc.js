@@ -30,5 +30,6 @@ module.exports = {
     'no-param-reassign': 0,
     'no-extra-semi': 0,
     'consistent-return': 0,
+    'prefer-promise-reject-errors': 0,
   },
 };
