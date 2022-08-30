@@ -5,9 +5,8 @@ import { IUsersService } from '../../service/service';
 import { AuthMiddleware } from '../middlewares/auth.middleware';
 
 class UsersRoute {
-  constructor(private usersService: IUsersService, private authMiddleware: AuthMiddleware) {
+  constructor(private usersService: IUsersService) {
     this.usersService = usersService;
-    this.authMiddleware = authMiddleware;
   }
 
   initRoutes() {

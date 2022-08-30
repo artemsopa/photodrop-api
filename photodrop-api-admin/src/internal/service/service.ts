@@ -7,6 +7,7 @@ import AlbumsService from './albums.service';
 import UsersService from './users.service';
 import { UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
+import PhotosService from './photos.service';
 
 export interface IAuthService {
     signIn(login: string, password: string): Promise<string>;
@@ -22,8 +23,8 @@ export interface IAlbumsService {
 }
 
 export interface IPhotosService {
-    getAll(cameristId: string, albumId: string): Promise<PhotoInfo[]>;
-    create(cameristId: string, photo: PhotoInput): Promise<void>;
+    getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]>;
+    createMany(cameristId: string, albumId: string, photos: PhotoInput[]): Promise<void>;
 }
 
 export class Deps {
@@ -41,9 +42,11 @@ export default class Services {
   auth: IAuthService;
   users: IUsersService;
   almubs: IAlbumsService;
+  photos: IPhotosService;
   constructor(deps: Deps) {
     this.auth = new AuthService(deps.repos.camerists, deps.authManager);
     this.users = new UsersService(deps.repos.users);
     this.almubs = new AlbumsService(deps.repos.albums);
+    this.photos = new PhotosService(deps.repos.photos);
   }
 }

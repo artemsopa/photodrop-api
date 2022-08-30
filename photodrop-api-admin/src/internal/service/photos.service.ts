@@ -8,12 +8,12 @@ class PhotosService implements IPhotosService {
     this.photosRepo = photosRepo;
   }
 
-  async getAll(cameristId: string, albumId: string): Promise<PhotoInfo[]> {
+  async getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]> {
     return (await this.photosRepo.getAllByAlbumId(cameristId, albumId)).map((item) => new PhotoInfo(item.id, item.path));
   }
 
-  async create(cameristId: string, photo: PhotoInput): Promise<void> {
-    await this.photosRepo.create(new Photo(photo.path, photo.albumId, cameristId));
+  async createMany(cameristId: string, albumId: string, photo: PhotoInput[]): Promise<void> {
+    // await this.photosRepo.create(new Photo(photo.path, photo.albumId, cameristId));
   }
 }
 
