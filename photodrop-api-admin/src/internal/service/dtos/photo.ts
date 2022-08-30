@@ -1,19 +1,15 @@
 export class PhotoInput {
   path: string;
-  albumId: string;
-  cameristId: string;
-  constructor(path: string, albumId: string, cameristId: string) {
-    this.albumId = albumId;
+  constructor(path: string) {
     this.path = path;
-    this.cameristId = cameristId;
   }
 }
 
 export class PhotoInfo {
   id: string;
-  path: string;
-  constructor(id: string, path: string) {
+  url: string;
+  constructor(id: string, url: string) {
     this.id = id;
-    this.path = path;
+    this.url = url;
   }
 }
