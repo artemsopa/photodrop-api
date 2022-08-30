@@ -1,8 +1,11 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import User from '../../internal/repository/entities/camerist';
+import User from '../../internal/repository/entities/user';
 import Album from '../../internal/repository/entities/album';
 import Image from '../../internal/repository/entities/photo';
+import UserAlbum from '../../internal/repository/entities/user_album';
+import Camerist from '../../internal/repository/entities/camerist';
+import OrderPhoto from '../../internal/repository/entities/order_photo';
 
 const initDB = (
   host: string,
@@ -18,7 +21,7 @@ const initDB = (
     username,
     password,
     database,
-    entities: [User, Album, Image],
+    entities: [Camerist, User, Album, Image, UserAlbum, OrderPhoto],
     synchronize: true,
     logging: true,
   });
