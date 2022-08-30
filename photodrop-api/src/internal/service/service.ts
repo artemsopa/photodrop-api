@@ -7,6 +7,7 @@ import AlbumsService from './albums.service';
 import ImagesService from './images.service';
 import UsersService from './users.service';
 import { UserInfo } from './dtos/user';
+import { IS3Storage } from '../../pkg/storage/s3';
 
 export interface IAuthService {
     signIn(login: string, password: string): Promise<string>;
@@ -29,9 +30,11 @@ export interface IImagesService {
 export class Deps {
   repos: Repositories;
   authManager: IAuthManager;
-  constructor(repos: Repositories, authManager: IAuthManager) {
+  s3Storage: IS3Storage;
+  constructor(repos: Repositories, authManager: IAuthManager, s3Storage: IS3Storage) {
     this.repos = repos;
     this.authManager = authManager;
+    this.s3Storage = s3Storage;
   }
 }
 
