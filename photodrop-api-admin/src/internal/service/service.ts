@@ -23,6 +23,7 @@ export interface IAlbumsService {
 }
 
 export interface IPhotosService {
+    createUploadUrl(cameristId: string, albumId: string, cType: string): Promise<{url: string, key: string}>
     getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]>;
     createMany(cameristId: string, albumId: string, photos: PhotoInput[]): Promise<void>;
 }
@@ -47,6 +48,6 @@ export default class Services {
     this.auth = new AuthService(deps.repos.camerists, deps.authManager);
     this.users = new UsersService(deps.repos.users);
     this.almubs = new AlbumsService(deps.repos.albums);
-    this.photos = new PhotosService(deps.repos.photos);
+    this.photos = new PhotosService(deps.repos.photos, deps.s3Storage);
   }
 }

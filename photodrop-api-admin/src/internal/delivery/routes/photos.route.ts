@@ -4,7 +4,7 @@ import {
 import { IPhotosService } from '../../service/service';
 import { AuthMiddleware } from '../middlewares/auth.middleware';
 import validateSchema from './joi-schemas/schema';
-import { insertPhotosSchema } from './joi-schemas/photo.schema';
+import { insertPhotosSchema, getSignedUrlSchema } from './joi-schemas/photo.schema';
 
 class PhotosRoute {
   constructor(private photosService: IPhotosService, private authMiddleware: AuthMiddleware) {
@@ -14,11 +14,19 @@ class PhotosRoute {
 
   initRoutes() {
     return Router()
-      .get('/', this.createMany.bind(this));
+      .post('/s3url', this.createUploadUrl.bind(this))
+      .post('/', this.createMany.bind(this));
   }
 
   private async createUploadUrl(req: Request, res: Response, next: NextFunction) {
-    return res.status(200).json({ message: 'Your url' });
+    try {
+      const cameristId = this.authMiddleware.getCameristId(req);
+      const body = validateSchema(getSignedUrlSchema, req.body);
+      const result = await this.photosService.createUploadUrl(cameristId, body.albumId, body.contentType);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async createMany(req: Request, res: Response, next: NextFunction) {
