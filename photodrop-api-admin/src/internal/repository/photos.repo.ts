@@ -9,12 +9,16 @@ class PhotosRepo implements IPhotosRepo {
     this.repo = ds.getRepository(Photo);
   }
 
-  async getAllByAlbumId(albumId: string, cameristId: string): Promise<Photo[]> {
+  async getAllByAlbum(albumId: string, cameristId: string): Promise<Photo[]> {
     return await this.repo.find({ where: { albumId, cameristId } });
   }
 
   async create(photo: Photo): Promise<void> {
     await this.repo.save(photo);
+  }
+
+  async createMany(photos: Photo[]): Promise<void> {
+    await this.repo.save(photos);
   }
 }
 

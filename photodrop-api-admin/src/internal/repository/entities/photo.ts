@@ -11,15 +11,15 @@ export default class Photo {
     id: string;
 
   @Column()
-    path: string;
+    key: string;
 
-  @Column()
+  @Column({ name: 'album_id' })
     albumId: string;
   @ManyToOne(() => Album, album => album.photos, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'album_id' })
     album: Album;
 
-  @Column()
+  @Column({ name: 'camerist_id' })
     cameristId: string;
   @ManyToOne(() => Camerist, camerist => camerist.photos, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'camerist_id' })
@@ -28,8 +28,8 @@ export default class Photo {
   @OneToMany(() => OrderPhoto, orderPhoto => orderPhoto.photo)
     orderPhotos: OrderPhoto[];
 
-  constructor(path: string, albumId: string, cameristId: string) {
-    this.path = path;
+  constructor(key: string, albumId: string, cameristId: string) {
+    this.key = key;
     this.albumId = albumId;
     this.cameristId = cameristId;
   }

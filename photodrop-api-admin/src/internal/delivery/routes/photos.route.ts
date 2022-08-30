@@ -33,7 +33,8 @@ class PhotosRoute {
     try {
       const cameristId = this.authMiddleware.getCameristId(req);
       const body = validateSchema(insertPhotosSchema, req.body);
-      res.status(200).json({ cameristId, body });
+      await this.photosService.createMany(cameristId, body.albumId, body.photos);
+      res.status(200).json({ message: 'Photos successfully uploaded!' });
     } catch (error) {
       next(error);
     }

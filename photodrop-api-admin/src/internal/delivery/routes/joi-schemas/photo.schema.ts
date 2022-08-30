@@ -5,9 +5,9 @@ export const getSignedUrlSchema = Joi.object({
   contentType: Joi.string().required(),
 });
 
-const photoPath = Joi.string().required();
+const photoKey = Joi.string().required();
 
 export const insertPhotosSchema = Joi.object({
   albumId: Joi.string().required(),
-  photos: Joi.array().items(photoPath),
+  photos: Joi.array().items(photoKey),
 });

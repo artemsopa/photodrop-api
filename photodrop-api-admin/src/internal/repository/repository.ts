@@ -27,8 +27,9 @@ export interface IAlbumsRepo {
 }
 
 export interface IPhotosRepo {
-  getAllByAlbumId(albumId: string, cameristId: string): Promise<Photo[]>;
+  getAllByAlbum(albumId: string, cameristId: string): Promise<Photo[]>;
   create(photo: Photo): Promise<void>;
+  createMany(photos: Photo[]): Promise<void>
 }
 
 export default class Repositories {

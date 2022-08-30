@@ -23,9 +23,9 @@ export interface IAlbumsService {
 }
 
 export interface IPhotosService {
-    createUploadUrl(cameristId: string, albumId: string, cType: string): Promise<{url: string, key: string}>
+    createUploadUrl(cameristId: string, albumId: string, contentType: string): Promise<{ data: { method: string, url: string, fields: string[], headers: string[] }, key: string }>
+    createMany(cameristId: string, albumId: string, keys: string[]): Promise<void>;
     getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]>;
-    createMany(cameristId: string, albumId: string, photos: PhotoInput[]): Promise<void>;
 }
 
 export class Deps {
