@@ -4,5 +4,5 @@ export interface IAuthManager {
 }
 
 export interface JwtPlaceholder {
-    userId: string;
+    cameristId: string;
 }

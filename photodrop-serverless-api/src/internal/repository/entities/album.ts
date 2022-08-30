@@ -1,8 +1,9 @@
 import {
   Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany,
 } from 'typeorm';
-import Image from './image';
-import User from './user';
+import Photo from './photo';
+import Camerist from './camerist';
+import UserAlbum from './user_album';
 
 @Entity({ name: 'album' })
 export default class Album {
@@ -16,18 +17,20 @@ export default class Album {
     location: string;
 
   @Column()
-    userId: string;
+    cameristId: string;
+  @ManyToOne(() => Camerist, camerist => camerist.albums, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'camerist_id' })
+    camerist: Camerist;
 
-  @ManyToOne(() => User, user => user.albums, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
-    user: User;
+  @OneToMany(() => Photo, photo => photo.album)
+    photos: Photo[];
 
-  @OneToMany(() => Image, image => image.album)
-    images: Image[];
+  @OneToMany(() => UserAlbum, userAlbum => userAlbum.album)
+    userAlbums: UserAlbum[];
 
-  constructor(title: string, location: string, userId: string) {
+  constructor(title: string, location: string, cameristId: string) {
     this.title = title;
     this.location = location;
-    this.userId = userId;
+    this.cameristId = cameristId;
   }
 }

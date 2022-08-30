@@ -9,17 +9,17 @@ class AlbumsService implements IAlbumsService {
     this.albumsRepo = albumsRepo;
   }
 
-  async getAll(userId: string): Promise<AlbumInfo[]> {
-    return (await this.albumsRepo.getAll(userId)).map((item) => new AlbumInfo(
+  async getAll(cameristId: string): Promise<AlbumInfo[]> {
+    return (await this.albumsRepo.getAll(cameristId)).map((item) => new AlbumInfo(
       item.id,
       item.title,
       item.location,
     ));
   }
 
-  async create(userId: string, album: AlbumInput): Promise<void> {
-    if (await this.albumsRepo.isAlbumExists(userId, album.title)) throw new ApiError(400, `Bad Request! Album ${album.title} already exists!`);
-    await this.albumsRepo.create(new Album(album.title, album.location, userId));
+  async create(cameristId: string, album: AlbumInput): Promise<void> {
+    if (await this.albumsRepo.isAlbumExists(cameristId, album.title)) throw new ApiError(400, `Bad Request! Album ${album.title} already exists!`);
+    await this.albumsRepo.create(new Album(album.title, album.location, cameristId));
   }
 }
 

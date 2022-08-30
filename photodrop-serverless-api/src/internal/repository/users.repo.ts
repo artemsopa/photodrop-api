@@ -9,34 +9,8 @@ class UsersRepo implements IUsersRepo {
     this.repo = ds.getRepository(User);
   }
 
-  async getAll(id: string): Promise<User[]> {
-    return await this.repo.find({ where: { id: Not(id) } });
-  }
-
-  async isLoginExists(login: string): Promise<boolean> {
-    const user = await this.repo.findOne({
-      where: {
-        login,
-      },
-    });
-    return !!user;
-  }
-
-  async isEmailExists(email: string): Promise<boolean> {
-    const user = await this.repo.findOne({
-      where: {
-        email,
-      },
-    });
-    return !!user;
-  }
-
-  async getByLogin(login: string): Promise<User | null> {
-    return await this.repo.findOne({ where: { login } });
-  }
-
-  async create(user: User): Promise<void> {
-    await this.repo.save(user);
+  async getAll(): Promise<User[]> {
+    return await this.repo.find();
   }
 }
 

@@ -7,13 +7,13 @@ export class AuthMiddleware {
     this.authManager = authManager;
   }
 
-  getUserId(req: Request) {
+  getCameristId(req: Request) {
     const authHeader = req.headers.authorization;
     if (!authHeader) throw ApiError.unauthorized();
     const token = authHeader.split(' ')[1];
     if (!token) throw ApiError.unauthorized();
-    const userId = this.authManager.verifyToken(token);
-    if (!userId) throw ApiError.unauthorized();
-    return userId;
+    const cameristId = this.authManager.verifyToken(token);
+    if (!cameristId) throw ApiError.unauthorized();
+    return cameristId;
   };
 }

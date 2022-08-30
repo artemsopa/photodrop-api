@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import User from '../../internal/repository/entities/user';
+import User from '../../internal/repository/entities/camerist';
 import Album from '../../internal/repository/entities/album';
-import Image from '../../internal/repository/entities/image';
+import Image from '../../internal/repository/entities/photo';
 
 const initDB = (
   host: string,

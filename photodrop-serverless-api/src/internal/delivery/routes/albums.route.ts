@@ -20,8 +20,8 @@ class AlbumsRoute {
 
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = this.authMiddleware.getUserId(req);
-      const albums = await this.albumsService.getAll(userId);
+      const cameristId = this.authMiddleware.getCameristId(req);
+      const albums = await this.albumsService.getAll(cameristId);
       res.status(200).json(albums);
     } catch (error) {
       next(error);
@@ -30,9 +30,9 @@ class AlbumsRoute {
 
   private async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = this.authMiddleware.getUserId(req);
+      const cameristId = this.authMiddleware.getCameristId(req);
       const body = validateSchema(albumSchema, req.body);
-      await this.albumsService.create(userId, body);
+      await this.albumsService.create(cameristId, body);
       res.status(201).json({ message: `Album "${body.title}" successfully created!` });
     } catch (error) {
       next(error);

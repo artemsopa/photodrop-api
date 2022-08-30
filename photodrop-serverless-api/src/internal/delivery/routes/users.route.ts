@@ -17,8 +17,7 @@ class UsersRoute {
 
   private async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = this.authMiddleware.getUserId(req);
-      const users = await this.usersService.getAll(userId);
+      const users = await this.usersService.getAll();
       res.status(200).json(users);
     } catch (error) {
       next(error);

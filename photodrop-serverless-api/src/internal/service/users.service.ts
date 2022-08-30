@@ -7,11 +7,13 @@ class UsersService implements IUsersService {
     this.usersRepo = usersRepo;
   }
 
-  async getAll(id: string): Promise<UserInfo[]> {
-    return (await this.usersRepo.getAll(id)).map((item) => new UserInfo(
+  async getAll(): Promise<UserInfo[]> {
+    return (await this.usersRepo.getAll()).map((item) => new UserInfo(
       item.id,
-      item.login,
+      item.phone,
       item.fullName,
+      item.email,
+      item.avatar,
     ));
   }
 }

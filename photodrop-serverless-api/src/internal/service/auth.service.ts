@@ -1,23 +1,23 @@
 import { IAuthService } from './service';
 import { IAuthManager } from '../../pkg/auth/auth';
-import { IUsersRepo } from '../repository/repository';
+import { ICameristsRepo } from '../repository/repository';
 import ApiError from '../domain/error';
 
 class AuthService implements IAuthService {
-  constructor(private usersRepo: IUsersRepo, private authManager: IAuthManager) {
-    this.usersRepo = usersRepo;
+  constructor(private cameristsRepo: ICameristsRepo, private authManager: IAuthManager) {
+    this.cameristsRepo = cameristsRepo;
     this.authManager = authManager;
   }
 
   async signIn(login: string, password: string): Promise<string> {
-    const user = await this.usersRepo.getByLogin(login);
-    if (!user) {
+    const camerist = await this.cameristsRepo.getByLogin(login);
+    if (!camerist) {
       throw new ApiError(401, 'Unauthorized! Incorrect login.');
     }
-    if (password !== user.password) {
+    if (password !== camerist.password) {
       throw new ApiError(401, 'Unauthorized! Incorrect password.');
     }
-    return this.authManager.newToken(user.id);
+    return this.authManager.newToken(camerist.id);
   }
 }
 
