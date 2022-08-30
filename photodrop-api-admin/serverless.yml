@@ -22,8 +22,8 @@ provider:
     DB_NAME: ${env:DB_NAME}
     JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
     JWT_TTL: ${env:JWT_TTL}
-    S3_REGION: ${self:provider.region}
     S3_BUCKET: ${env:S3_BUCKET}
+    S3_REGION: ${self:provider.region}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
