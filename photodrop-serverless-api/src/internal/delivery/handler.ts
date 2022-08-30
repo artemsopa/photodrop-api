@@ -16,12 +16,24 @@ class Handler {
   }
 
   initHandler() {
-    return express()
-      .use(cors())
+    // local
+    const app = express();
+    app.use(cors())
       .use(express.json())
       .use(this.initRoutes())
       .use(errorMiddleware)
       .use(notfMiddleware);
+    app.listen(3000, () => {
+      console.log(`Server is running at https://localhost:${3000}`);
+    });
+
+    // prod
+    // return express()
+    //   .use(cors())
+    //   .use(express.json())
+    //   .use(this.initRoutes())
+    //   .use(errorMiddleware)
+    //   .use(notfMiddleware);
   }
 
   private initRoutes() {
