@@ -13,10 +13,6 @@ class PhotosRepo implements IPhotosRepo {
     return await this.repo.find({ where: { albumId, cameristId } });
   }
 
-  async create(photo: Photo): Promise<void> {
-    await this.repo.save(photo);
-  }
-
   async createMany(photos: Photo[]): Promise<void> {
     await this.repo.save(photos);
   }
