@@ -3,9 +3,9 @@ import {
 } from 'typeorm';
 import Album from './album';
 import Camerist from './camerist';
-import OrderPhoto from './order_photo';
+import Order from './order';
 
-@Entity({ name: 'photo' })
+@Entity({ name: 'photos' })
 export default class Photo {
   @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -25,8 +25,8 @@ export default class Photo {
   @JoinColumn({ name: 'camerist_id' })
     camerist: Camerist;
 
-  @OneToMany(() => OrderPhoto, orderPhoto => orderPhoto.photo)
-    orderPhotos: OrderPhoto[];
+  @OneToMany(() => Order, order => order.photo)
+    orders: Order[];
 
   constructor(key: string, albumId: string, cameristId: string) {
     this.key = key;

@@ -2,11 +2,10 @@ import {
   Entity, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
 import Album from './album';
-import OrderPhoto from './order_photo';
+import Order from './order';
 import Photo from './photo';
-import UserAlbum from './user_album';
 
-@Entity({ name: 'camerist' })
+@Entity({ name: 'camerists' })
 export default class Camerist {
   @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -29,11 +28,8 @@ export default class Camerist {
   @OneToMany(() => Photo, photo => photo.camerist)
     photos: Photo[];
 
-  @OneToMany(() => UserAlbum, userAlbum => userAlbum.camerist)
-    userAlbums: UserAlbum[];
-
-  @OneToMany(() => OrderPhoto, orderPhoto => orderPhoto.camerist)
-    orderPhotos: OrderPhoto[];
+  @OneToMany(() => Order, order => order.camerist)
+    orders: Order[];
 
   constructor(login: string, password: string, fullName: string | null, email: string | null) {
     this.login = login;

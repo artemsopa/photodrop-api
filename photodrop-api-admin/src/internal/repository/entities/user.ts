@@ -1,10 +1,9 @@
 import {
   Entity, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
-import OrderPhoto from './order_photo';
-import UserAlbum from './user_album';
+import Order from './order';
 
-@Entity({ name: 'user' })
+@Entity({ name: 'users' })
 export default class User {
   @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -21,9 +20,6 @@ export default class User {
   @Column({ type: String, unique: true, nullable: true })
     email: string | null;
 
-  @OneToMany(() => UserAlbum, userAlbum => userAlbum.user)
-    userAlbums: UserAlbum[];
-
-  @OneToMany(() => OrderPhoto, orderPhoto => orderPhoto.user)
-    orderPhotos: OrderPhoto[];
+  @OneToMany(() => Order, order => order.user)
+    orders: Order[];
 }
