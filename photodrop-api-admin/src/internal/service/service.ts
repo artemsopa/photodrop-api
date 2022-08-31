@@ -1,13 +1,15 @@
 import { IAuthManager } from '../../pkg/auth/auth';
 import Repositories from '../repository/repository';
 import { AlbumInfo, AlbumInput } from './dtos/album';
-import { PhotoInput, PhotoInfo } from './dtos/photo';
+import { PhotoInfo } from './dtos/photo';
 import AuthService from './auth.service';
 import AlbumsService from './albums.service';
 import UsersService from './users.service';
 import { UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
 import PhotosService from './photos.service';
+import { OrderInput } from './dtos/order';
+import OrdersService from './orders.service';
 
 export interface IAuthService {
     signIn(login: string, password: string): Promise<string>;
@@ -28,6 +30,10 @@ export interface IPhotosService {
     getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]>;
 }
 
+export interface IOrdersService {
+    createOrder(cameristId: string, albumId: string, ordersInp: OrderInput[]): Promise<void>
+}
+
 export class Deps {
   repos: Repositories;
   authManager: IAuthManager;
@@ -44,10 +50,12 @@ export default class Services {
   users: IUsersService;
   almubs: IAlbumsService;
   photos: IPhotosService;
+  orders: IOrdersService;
   constructor(deps: Deps) {
     this.auth = new AuthService(deps.repos.camerists, deps.authManager);
     this.users = new UsersService(deps.repos.users);
     this.almubs = new AlbumsService(deps.repos.albums);
     this.photos = new PhotosService(deps.repos.photos, deps.s3Storage);
+    this.orders = new OrdersService(deps.repos.orders);
   }
 }
