@@ -11,3 +11,7 @@ export const insertPhotosSchema = Joi.object({
   albumId: Joi.string().required(),
   photos: Joi.array().items(photoKey),
 });
+
+export const idReqSchema = Joi.object().keys({
+  id: Joi.string().required(),
+}).unknown(true);
