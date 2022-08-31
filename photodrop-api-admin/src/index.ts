@@ -1,7 +1,7 @@
-// import serverless from 'serverless-http';
+import serverless from 'serverless-http';
 import { runApp } from './app/app';
 
-runApp();
-// const app = runApp();
+// runApp();
+const app = runApp();
 
-// export const handler = serverless(app);
+export const handler = serverless(app);
