@@ -3,9 +3,8 @@ import { DataSource } from 'typeorm';
 import User from '../../internal/repository/entities/user';
 import Album from '../../internal/repository/entities/album';
 import Photo from '../../internal/repository/entities/photo';
-import UserAlbum from '../../internal/repository/entities/user_album';
 import Camerist from '../../internal/repository/entities/camerist';
-import OrderPhoto from '../../internal/repository/entities/order_photo';
+import Order from '../../internal/repository/entities/order';
 
 const initDB = (
   host: string,
@@ -21,8 +20,8 @@ const initDB = (
     username,
     password,
     database,
-    entities: [Camerist, User, Album, Photo, UserAlbum, OrderPhoto],
-    synchronize: true,
+    entities: [Camerist, User, Album, Photo, Order],
+    synchronize: false,
     logging: true,
   });
   appDataSource.initialize();
