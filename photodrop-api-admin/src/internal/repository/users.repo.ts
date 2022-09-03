@@ -12,6 +12,26 @@ class UsersRepo implements IUsersRepo {
   async getAll(): Promise<User[]> {
     return await this.repo.find();
   }
+
+  async create(user: User): Promise<void> {
+    await this.repo.save(user);
+  }
+
+  async updatePhone(userId: string, phone: string): Promise<void> {
+    await this.repo.update(userId, { phone });
+  }
+
+  async updateEmail(userId: string, email: string): Promise<void> {
+    await this.repo.update(userId, { email });
+  }
+
+  async updateFullName(userId: string, fullName: string): Promise<void> {
+    await this.repo.update(userId, { fullName });
+  }
+
+  async updateAvatar(userId: string, avatar: string): Promise<void> {
+    await this.repo.update(userId, { avatar });
+  }
 }
 
 export default UsersRepo;

@@ -20,6 +20,11 @@ export interface ICameristsRepo {
 
 export interface IUsersRepo {
   getAll(): Promise<User[]>;
+  create(user: User): Promise<void>;
+  updatePhone(userId: string, phone: string): Promise<void>;
+  updateEmail(userId: string, email: string): Promise<void>;
+  updateFullName(userId: string, fullName: string): Promise<void>;
+  updateAvatar(userId: string, avatar: string): Promise<void>;
 }
 
 export interface IAlbumsRepo {
@@ -30,11 +35,14 @@ export interface IAlbumsRepo {
 
 export interface IPhotosRepo {
   getAllByAlbum(albumId: string, cameristId: string): Promise<Photo[]>;
-  createMany(photos: Photo[]): Promise<void>
+  createMany(photos: Photo[]): Promise<void>;
 }
 
 export interface IOrdersRepo {
-  createMany(orders: Order[]): Promise<void>
+  createMany(orders: Order[]): Promise<void>;
+  getOrderAlbumsByUser(userId: string): Promise<Album[]>;
+  getOrderPhotosByUser(userId: string): Promise<Order[]>;
+  getOrderPhotosByAlbumUser(userId: string, albumId: string): Promise<Order[]>;
 }
 
 export default class Repositories {
