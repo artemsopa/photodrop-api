@@ -44,8 +44,8 @@ class PhotosRoute {
   private async getAllByAlbum(req: Request, res: Response, next: NextFunction) {
     try {
       const cameristId = this.authMiddleware.getCameristId(req);
-      const id = validateSchema(idReqSchema, req.query);
-      const photos = await this.photosService.getAllByAlbum(cameristId, id);
+      const query = validateSchema(idReqSchema, req.query);
+      const photos = await this.photosService.getAllByAlbum(cameristId, query.id);
       res.status(200).json(photos);
     } catch (error) {
       next(error);

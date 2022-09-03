@@ -22,7 +22,7 @@ class OrdersRoute {
       const cameristId = this.authMiddleware.getCameristId(req);
       const body = validateSchema(orderSchema, req.body);
       await this.ordersService.createOrder(cameristId, body.albumId, body.orders);
-      res.status(200).json({ message: 'Photos successfully uploaded!' });
+      res.status(200).json({ message: 'Photos successfully added to users!' });
     } catch (error) {
       next(error);
     }
