@@ -33,8 +33,9 @@ class PhotosService implements IPhotosService {
   }
 
   async getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]> {
-    const photosRepo = await this.photosRepo.getAllByAlbum(cameristId, albumId);
+    const photosRepo = await this.photosRepo.getAllByAlbum(albumId, cameristId);
     const photos: PhotoInfo[] = [];
+    // photosRepo.forEach(async (item) => photos.push(new PhotoInfo(item.id, item.key)));
     photosRepo.forEach(async (item) => photos.push(new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
     return photos;
   }
