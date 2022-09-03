@@ -13,14 +13,14 @@ export class JwtManager implements IAuthManager {
     this.TTL = TTL;
   }
 
-  newToken(cameristId: string): string {
-    return jwt.sign({ cameristId }, this.signingKey, { expiresIn: this.TTL });
+  newToken(key: string): string {
+    return jwt.sign({ key }, this.signingKey, { expiresIn: this.TTL });
   }
 
   verifyToken(token: string) {
     try {
       const jwtObj = jwt.verify(token, this.signingKey) as JwtPlaceholder;
-      return jwtObj.cameristId;
+      return jwtObj.key;
     } catch (error) {
       return null;
     }
