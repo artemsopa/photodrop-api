@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { PhotoInfo, PhotoInput } from './dtos/photo';
+import { PhotoInfo } from './dtos/photo';
 import { IPhotosService } from './service';
 import { IPhotosRepo } from '../repository/repository';
 import Photo from '../repository/entities/photo';
@@ -15,7 +15,7 @@ class PhotosService implements IPhotosService {
   async createUploadUrl(cameristId: string, albumId: string, contentType: string) {
     await this.isImageType(contentType);
     const key = `${cameristId}/${albumId}/${uuidv4()}`;
-    const url = await this.s3Storage.getSignedUrl(key, contentType);
+    const url = await this.s3Storage.getSignedUrlPut(key, contentType);
     return {
       data: {
         method: 'PUT',
@@ -33,7 +33,10 @@ class PhotosService implements IPhotosService {
   }
 
   async getAllByAlbum(cameristId: string, albumId: string): Promise<PhotoInfo[]> {
-    return (await this.photosRepo.getAllByAlbum(cameristId, albumId)).map((item) => new PhotoInfo(item.id, item.key));
+    const photosRepo = await this.photosRepo.getAllByAlbum(cameristId, albumId);
+    const photos: PhotoInfo[] = [];
+    photosRepo.forEach(async (item) => photos.push(new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
+    return photos;
   }
 
   private isImageType(contentType: string) {
