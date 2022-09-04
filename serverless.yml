@@ -1,6 +1,6 @@
 org: artemsopa
-app: photodrop-api-admin
-service: photodrop-api-admin
+app: photodrop-api
+service: photodrop-api
 frameworkVersion: '3'
 useDotenv: true
 
