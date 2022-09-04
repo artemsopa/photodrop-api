@@ -13,24 +13,28 @@ class UsersRepo implements IUsersRepo {
     return await this.repo.find();
   }
 
+  async findOneByPhone(phone: string): Promise<User | null> {
+    return await this.repo.findOne({ where: { phone } });
+  }
+
   async create(user: User): Promise<void> {
     await this.repo.save(user);
   }
 
-  async updatePhone(userId: string, phone: string): Promise<void> {
-    await this.repo.update(userId, { phone });
+  async updatePhone(id: string, phone: string): Promise<void> {
+    await this.repo.update({ id }, { phone });
   }
 
-  async updateEmail(userId: string, email: string): Promise<void> {
-    await this.repo.update(userId, { email });
+  async updateEmail(id: string, email: string): Promise<void> {
+    await this.repo.update({ id }, { email });
   }
 
-  async updateFullName(userId: string, fullName: string): Promise<void> {
-    await this.repo.update(userId, { fullName });
+  async updateFullName(id: string, fullName: string): Promise<void> {
+    await this.repo.update({ id }, { fullName });
   }
 
-  async updateAvatar(userId: string, avatar: string): Promise<void> {
-    await this.repo.update(userId, { avatar });
+  async updateAvatar(id: string, avatar: string): Promise<void> {
+    await this.repo.update({ id }, { avatar });
   }
 }
 

@@ -20,11 +20,12 @@ export interface ICameristsRepo {
 
 export interface IUsersRepo {
   getAll(): Promise<User[]>;
+  findOneByPhone(phone: string): Promise<User | null>
   create(user: User): Promise<void>;
-  updatePhone(userId: string, phone: string): Promise<void>;
-  updateEmail(userId: string, email: string): Promise<void>;
-  updateFullName(userId: string, fullName: string): Promise<void>;
-  updateAvatar(userId: string, avatar: string): Promise<void>;
+  updatePhone(id: string, phone: string): Promise<void>;
+  updateEmail(id: string, email: string): Promise<void>;
+  updateFullName(id: string, fullName: string): Promise<void>;
+  updateAvatar(id: string, avatar: string): Promise<void>;
 }
 
 export interface IAlbumsRepo {
