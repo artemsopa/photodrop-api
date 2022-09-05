@@ -19,7 +19,7 @@ export default class Album {
   @Column()
     date: number;
 
-  @Column()
+  @Column({ name: 'camerist_id' })
     cameristId: string;
   @ManyToOne(() => Camerist, camerist => camerist.albums, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'camerist_id' })
