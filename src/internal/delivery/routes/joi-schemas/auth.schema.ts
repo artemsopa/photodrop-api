@@ -15,3 +15,12 @@ export const loginSchema = Joi.object({
 export const idSchema = Joi.object().keys({
   userId: Joi.string().required(),
 }).unknown(true);
+
+export const phoneSchema = Joi.object({
+  phone: Joi.string().required(),
+});
+
+export const verifySchema = Joi.object({
+  phone: Joi.string().required(),
+  code: Joi.string().required(),
+});
