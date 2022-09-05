@@ -43,10 +43,10 @@
     "express": "^4.18.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "messagebird": "^3.8.1",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "serverless-http": "^3.0.2",
+    "twilio": "^3.81.0",
     "typeorm": "^0.3.8",
     "uuid": "^8.3.2"
   }
