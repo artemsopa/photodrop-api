@@ -17,6 +17,9 @@ export default class Album {
     location: string;
 
   @Column()
+    date: number;
+
+  @Column()
     cameristId: string;
   @ManyToOne(() => Camerist, camerist => camerist.albums, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'camerist_id' })
@@ -28,9 +31,10 @@ export default class Album {
   @OneToMany(() => Order, order => order.album)
     orders: Order[];
 
-  constructor(title: string, location: string, cameristId: string) {
+  constructor(title: string, location: string, date: number, cameristId: string) {
     this.title = title;
     this.location = location;
+    this.date = date;
     this.cameristId = cameristId;
   }
 }

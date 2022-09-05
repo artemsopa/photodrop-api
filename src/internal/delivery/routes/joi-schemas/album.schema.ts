@@ -7,4 +7,6 @@ export const albumSchema = Joi.object({
     .required(),
   location: Joi.string()
     .required(),
+  date: Joi.number()
+    .required(),
 });
