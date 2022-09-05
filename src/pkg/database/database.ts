@@ -6,7 +6,7 @@ import Photo from '../../internal/repository/entities/photo';
 import Camerist from '../../internal/repository/entities/camerist';
 import Order from '../../internal/repository/entities/order';
 
-const initDB = (
+const initDbConnection = async (
   host: string,
   port: number,
   username: string,
@@ -21,12 +21,12 @@ const initDB = (
     password,
     database,
     entities: [Camerist, User, Album, Photo, Order],
-    synchronize: false,
+    synchronize: true,
     logging: true,
   });
-  appDataSource.initialize();
+  await appDataSource.initialize();
   console.log('Database connection successful...');
   return appDataSource;
 };
 
-export default initDB;
+export default initDbConnection;
