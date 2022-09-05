@@ -16,7 +16,7 @@ export default class Album {
   @Column()
     location: string;
 
-  @Column()
+  @Column({ name: 'date' })
     date: number;
 
   @Column({ name: 'camerist_id' })
