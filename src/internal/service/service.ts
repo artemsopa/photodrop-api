@@ -10,13 +10,16 @@ import { IS3Storage } from '../../pkg/storage/s3';
 import PhotosService from './photos.service';
 import { OrderInput } from './dtos/order';
 import OrdersService from './orders.service';
+import { IOTP } from '../../pkg/otp/twilio';
 
 export interface IAuthService {
     signIn(login: string, password: string): Promise<string>;
+    getVerificationCode(phone: string): Promise<void>;
+    verifyUser(phone: string, code: string): Promise<string>;
 }
 
 export interface IUsersService {
-    getAll(): Promise<UserInfo[]>
+    getAll(): Promise<UserInfo[]>;
 }
 
 export interface IAlbumsService {
@@ -38,10 +41,12 @@ export class Deps {
   repos: Repositories;
   authManager: IAuthManager;
   s3Storage: IS3Storage;
-  constructor(repos: Repositories, authManager: IAuthManager, s3Storage: IS3Storage) {
+  otp: IOTP;
+  constructor(repos: Repositories, authManager: IAuthManager, s3Storage: IS3Storage, otp: IOTP) {
     this.repos = repos;
     this.authManager = authManager;
     this.s3Storage = s3Storage;
+    this.otp = otp;
   }
 }
 
@@ -52,7 +57,7 @@ export default class Services {
   photos: IPhotosService;
   orders: IOrdersService;
   constructor(deps: Deps) {
-    this.auth = new AuthService(deps.repos.camerists, deps.authManager);
+    this.auth = new AuthService(deps.repos.camerists, deps.authManager, deps.otp);
     this.users = new UsersService(deps.repos.users);
     this.almubs = new AlbumsService(deps.repos.albums);
     this.photos = new PhotosService(deps.repos.photos, deps.s3Storage);
