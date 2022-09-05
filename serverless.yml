@@ -24,6 +24,9 @@ provider:
     JWT_TTL: ${env:JWT_TTL}
     S3_BUCKET: ${env:S3_BUCKET}
     S3_REGION: ${self:provider.region}
+    TWILIO_SID: ${env:TWILIO_SID}
+    TWILIO_TOKEN: ${env:TWILIO_TOKEN}
+    TWILIO_SERVICE: ${env:TWILIO_SERVICE}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
