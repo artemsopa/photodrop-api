@@ -13,7 +13,7 @@ class AuthRoute {
   initRoutes() {
     return Router()
       .post('/login', this.login.bind(this))
-      .post('/send-code', this.getVerificationCode.bind(this))
+      .post('/send-code', this.sendVerificationCode.bind(this))
       .post('/verify-user', this.verifyUser.bind(this));
   }
 
@@ -27,10 +27,10 @@ class AuthRoute {
     }
   }
 
-  private async getVerificationCode(req: Request, res: Response, next: NextFunction) {
+  private async sendVerificationCode(req: Request, res: Response, next: NextFunction) {
     try {
       const body = validateSchema(phoneSchema, req.body);
-      await this.authService.getVerificationCode(body.phone);
+      await this.authService.sendVerificationCode(body.phone);
       res.status(200).json({ message: `Verification code successfully sent to ${body.phone}.` });
     } catch (error) {
       next(error);
@@ -40,8 +40,8 @@ class AuthRoute {
   private async verifyUser(req: Request, res: Response, next: NextFunction) {
     try {
       const body = validateSchema(verifySchema, req.body);
-      const message = await this.authService.verifyUser(body.phone, body.code);
-      res.status(200).json({ message });
+      const token = await this.authService.verifyUser(body.phone, body.code);
+      res.status(200).json({ token });
     } catch (error) {
       next(error);
     }
