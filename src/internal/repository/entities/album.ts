@@ -3,7 +3,6 @@ import {
 } from 'typeorm';
 import Photo from './photo';
 import Camerist from './camerist';
-import Order from './order';
 
 @Entity({ name: 'albums' })
 export default class Album {
@@ -27,9 +26,6 @@ export default class Album {
 
   @OneToMany(() => Photo, photo => photo.album)
     photos: Photo[];
-
-  @OneToMany(() => Order, order => order.album)
-    orders: Order[];
 
   constructor(title: string, location: string, date: number, cameristId: string) {
     this.title = title;

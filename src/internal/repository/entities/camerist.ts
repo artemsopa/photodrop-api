@@ -2,8 +2,6 @@ import {
   Entity, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
 import Album from './album';
-import Order from './order';
-import Photo from './photo';
 
 @Entity({ name: 'camerists' })
 export default class Camerist {
@@ -24,12 +22,6 @@ export default class Camerist {
 
   @OneToMany(() => Album, album => album.camerist)
     albums: Album[];
-
-  @OneToMany(() => Photo, photo => photo.camerist)
-    photos: Photo[];
-
-  @OneToMany(() => Order, order => order.camerist)
-    orders: Order[];
 
   constructor(login: string, password: string, fullName: string | null, email: string | null) {
     this.login = login;
