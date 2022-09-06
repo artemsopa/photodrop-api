@@ -22,4 +22,8 @@ export default class User {
 
   @OneToMany(() => Order, order => order.user)
     orders: Order[];
+
+  constructor(phone: string) {
+    this.phone = phone;
+  }
 }
