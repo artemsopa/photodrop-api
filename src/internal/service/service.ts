@@ -14,12 +14,16 @@ import { IOTP } from '../../pkg/otp/twilio';
 
 export interface IAuthService {
     signIn(login: string, password: string): Promise<string>;
-    getVerificationCode(phone: string): Promise<void>;
+    sendVerificationCode(phone: string): Promise<void>;
     verifyUser(phone: string, code: string): Promise<string>;
 }
 
 export interface IUsersService {
     getAll(): Promise<UserInfo[]>;
+    updatePhone(id: string, phone: string): Promise<void>;
+    updateEmail(id: string, email: string): Promise<void>;
+    updateFullName(id: string, fullName: string): Promise<void>;
+    updateAvatar(id: string, avatar: string): Promise<void>;
 }
 
 export interface IAlbumsService {
@@ -57,8 +61,8 @@ export default class Services {
   photos: IPhotosService;
   orders: IOrdersService;
   constructor(deps: Deps) {
-    this.auth = new AuthService(deps.repos.camerists, deps.authManager, deps.otp);
-    this.users = new UsersService(deps.repos.users);
+    this.auth = new AuthService(deps.repos.camerists, deps.repos.users, deps.authManager, deps.otp);
+    this.users = new UsersService(deps.repos.users, deps.otp);
     this.almubs = new AlbumsService(deps.repos.albums);
     this.photos = new PhotosService(deps.repos.photos, deps.s3Storage);
     this.orders = new OrdersService(deps.repos.orders);
