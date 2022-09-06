@@ -21,7 +21,7 @@ export interface ICameristsRepo {
 export interface IUsersRepo {
   getAll(): Promise<User[]>;
   findOneByPhone(phone: string): Promise<User | null>
-  create(user: User): Promise<void>;
+  create(user: User): Promise<User>;
   updatePhone(id: string, phone: string): Promise<void>;
   updateEmail(id: string, email: string): Promise<void>;
   updateFullName(id: string, fullName: string): Promise<void>;

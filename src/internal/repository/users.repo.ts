@@ -17,8 +17,8 @@ class UsersRepo implements IUsersRepo {
     return await this.repo.findOne({ where: { phone } });
   }
 
-  async create(user: User): Promise<void> {
-    await this.repo.save(user);
+  async create(user: User): Promise<User> {
+    return await this.repo.save(user);
   }
 
   async updatePhone(id: string, phone: string): Promise<void> {
