@@ -24,7 +24,7 @@ export default class Photo {
 
   @Column({ name: 'phgraph_id' })
     phgraphId: string;
-  @ManyToOne(() => Phgraph, phgraph => phgraph.albums, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Phgraph, phgraph => phgraph.photos, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'phgraph_id' })
     phgraph: Phgraph;
 
