@@ -1,5 +1,9 @@
 import Joi from 'joi';
 
+export const idSchema = Joi.object().keys({
+  userId: Joi.string().required(),
+}).unknown(true);
+
 export const loginSchema = Joi.object({
   login: Joi.string()
     .min(4)
@@ -11,10 +15,6 @@ export const loginSchema = Joi.object({
     .max(30)
     .required(),
 });
-
-export const idSchema = Joi.object().keys({
-  userId: Joi.string().required(),
-}).unknown(true);
 
 export const phoneSchema = Joi.object({
   phone: Joi.string().required(),
