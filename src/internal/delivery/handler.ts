@@ -1,20 +1,23 @@
 import express, { Router } from 'express';
 import cors from 'cors';
-import Services from '../service/service';
+import Services from '../services/services';
 import errorMiddleware from './middlewares/error.middleware';
 import notfMiddleware from './middlewares/notf.middleware';
-import AuthRoute from './routes/auth.route';
-import AlbumsRoute from './routes/albums.route';
 import { IAuthManager } from '../../pkg/auth/auth';
 import { AuthMiddleware } from './middlewares/auth.middleware';
-import UsersRoute from './routes/users.route';
-import PhotosRoute from './routes/photos.route';
-import OrdersRoute from './routes/orders.route';
+import AuthPhgraphsRoute from './routes/phgraphs-routes/auth.route';
+import UsersRoute from './routes/phgraphs-routes/users.route';
+import AlbumsRoute from './routes/phgraphs-routes/albums.route';
+import PhotosRoute from './routes/phgraphs-routes/photos.route';
+import AuthUsersRoute from './routes/user-routes/auth.route';
+import GalleryRoute from './routes/user-routes/gallery.route';
+import ProfileRoute from './routes/user-routes/profile.route';
 
 class Handler {
-  constructor(private services: Services, private authManager: IAuthManager) {
+  private authMware: AuthMiddleware;
+  constructor(private services: Services, authManager: IAuthManager) {
     this.services = services;
-    this.authManager = authManager;
+    this.authMware = new AuthMiddleware(authManager);
   }
 
   initHandler() {
@@ -27,13 +30,24 @@ class Handler {
   }
 
   private initRoutes() {
-    const authMiddleware = new AuthMiddleware(this.authManager);
     return Router()
-      .use('/auth', new AuthRoute(this.services.auth).initRoutes())
+      .use('/phgraphs', this.initPhgraphRoutes())
+      .use('/users', this.initUserRoutes());
+  }
+
+  private initPhgraphRoutes() {
+    return Router()
+      .use('/auth', new AuthPhgraphsRoute(this.services.authPhgrapgs).initRoutes())
       .use('/users', new UsersRoute(this.services.users).initRoutes())
-      .use('/albums', new AlbumsRoute(this.services.almubs, authMiddleware).initRoutes())
-      .use('/photos', new PhotosRoute(this.services.photos, authMiddleware).initRoutes())
-      .use('/orders', new OrdersRoute(this.services.orders, authMiddleware).initRoutes());
+      .use('/albums', new AlbumsRoute(this.services.almubs, this.authMware).initRoutes())
+      .use('/photos', new PhotosRoute(this.services.photos, this.authMware).initRoutes());
+  }
+
+  private initUserRoutes() {
+    return Router()
+      .use('/auth', new AuthUsersRoute(this.services.authUsers).initRoutes())
+      .use('/profile', new ProfileRoute(this.services.profile, this.authMware).initRoutes())
+      .use('/gallery', new GalleryRoute(this.services.gallery, this.authMware).initRoutes());
   }
 }
 
