@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import initConfigs, { Configs } from '../configs/config';
-import Repositories from '../internal/repository/repository';
-import Services, { Deps } from '../internal/service/service';
+import Repositories from '../internal/repositories/repositories';
+import Services, { Deps } from '../internal/services/services';
 import Handler from '../internal/delivery/handler';
 import initDbConnection from '../pkg/database/database';
 import { JwtManager } from '../pkg/auth/jwt.auth';
