@@ -1,8 +1,7 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { IUsersService } from '../../service/service';
-import { AuthMiddleware } from '../middlewares/auth.middleware';
+import { IUsersService } from '../../../services/services';
 
 class UsersRoute {
   constructor(private usersService: IUsersService) {

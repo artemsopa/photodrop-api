@@ -1,30 +1,19 @@
 import {
   NextFunction, Request, Response, Router,
 } from 'express';
-import { IAuthService } from '../../service/service';
-import { loginSchema, phoneSchema, verifySchema } from './joi-schemas/auth.schema';
-import validateSchema from './joi-schemas/schema';
+import { IAuthUsersService } from '../../../services/services';
+import { phoneSchema, verifySchema } from '../joi-schemas/auth.schema';
+import validateSchema from '../joi-schemas/schema';
 
-class AuthRoute {
-  constructor(private authService: IAuthService) {
+class AuthUsersRoute {
+  constructor(private authService: IAuthUsersService) {
     this.authService = authService;
   }
 
   initRoutes() {
     return Router()
-      .post('/login', this.login.bind(this))
       .post('/send-code', this.sendVerificationCode.bind(this))
       .post('/verify-user', this.verifyUser.bind(this));
-  }
-
-  private async login(req: Request, res: Response, next: NextFunction) {
-    try {
-      const body = validateSchema(loginSchema, req.body);
-      const token = await this.authService.signIn(body.login, body.password);
-      res.status(200).json({ token });
-    } catch (error) {
-      next(error);
-    }
   }
 
   private async sendVerificationCode(req: Request, res: Response, next: NextFunction) {
@@ -48,4 +37,4 @@ class AuthRoute {
   }
 }
 
-export default AuthRoute;
+export default AuthUsersRoute;
