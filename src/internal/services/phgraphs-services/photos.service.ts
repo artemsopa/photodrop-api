@@ -16,10 +16,9 @@ class PhotosService {
     const key = `${phgraphId}/${albumId}/${uuidv4()}`;
     const url = await this.s3Storage.getSignedUrlPut(key, contentType);
     return {
-      data: {
-        method: 'PUT', url, fields: [], headers: ['content-type'],
-      },
-      key,
+      // data: {
+      method: 'PUT', url, fields: [], headers: ['content-type'],
+      // }, key,
     };
   }
 
