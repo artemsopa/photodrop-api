@@ -48,7 +48,7 @@ export interface IProfileService {
 export interface IGalleryService {
   getAllByUser(userId: string): Promise<{ albums: AlbumInfo[], photos: PhotoInfo[]; }>;
   getAllPhotosByAlbum(userId: string, albumId: string): Promise<PhotoInfo[]>;
-  payAlbum(userId: string, albumId: string): Promise<void>;
+  payForAlbum(userId: string, albumId: string): Promise<void>;
 }
 
 export class Deps {

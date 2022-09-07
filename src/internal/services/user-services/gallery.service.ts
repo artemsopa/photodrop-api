@@ -26,7 +26,7 @@ class GalleryService implements IGalleryService {
     return photos;
   }
 
-  async payAlbum(userId: string, albumId: string): Promise<void> {
+  async payForAlbum(userId: string, albumId: string): Promise<void> {
     await this.photosRepo.updateIsPaidByAlbum(userId, albumId);
   }
 }

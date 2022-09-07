@@ -16,7 +16,7 @@ class GalleryRoute {
     return Router()
       .get('/', this.getAll.bind(this))
       .get('/album', this.getAllByAlbum.bind(this))
-      .put('/album', this.payAlbum.bind(this));
+      .put('/album', this.payForAlbum.bind(this));
   }
 
   private async getAll(req: Request, res: Response, next: NextFunction) {
@@ -40,11 +40,11 @@ class GalleryRoute {
     }
   }
 
-  private async payAlbum(req: Request, res: Response, next: NextFunction) {
+  private async payForAlbum(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = this.authMiddleware.getId(req);
       const query = validateSchema(idReqSchema, req.query);
-      await this.galleryService.payAlbum(userId, query.id);
+      await this.galleryService.payForAlbum(userId, query.id);
       res.status(200).json({ message: 'Album paid for successfully!' });
     } catch (error) {
       next(error);
