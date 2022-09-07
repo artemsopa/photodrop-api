@@ -8,7 +8,5 @@ export default class ApiError extends Error {
     this.errors = errors;
   }
 
-  static unauthorized() {
-    return new ApiError(401, 'You are unauthorized!');
-  }
+  static unauthorized = () => new ApiError(401, 'You are unauthorized!');
 }
