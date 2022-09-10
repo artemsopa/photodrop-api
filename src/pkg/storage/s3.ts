@@ -1,8 +1,10 @@
 import AWS from 'aws-sdk';
+import ApiError from '../../internal/domain/error';
 
 export interface IS3Storage {
   getSignedUrlPut(key: string, cType: string): Promise<string>;
   getSignedUrlGet(key: string): Promise<string>;
+  isImageType(contentType: string): Promise<boolean>;
 }
 
 export class S3Storage implements IS3Storage {
@@ -31,4 +33,12 @@ export class S3Storage implements IS3Storage {
     };
     return await this.s3.getSignedUrlPromise('getObject', params);
   }
+
+  isImageType(contentType: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if (contentType.split('/')[0] !== 'image') {
+        reject(new ApiError(400, 'Invalid Content-Type!'));
+      } else resolve(true);
+    });
+  };
 }
