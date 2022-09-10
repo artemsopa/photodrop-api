@@ -3,7 +3,7 @@ import { IProfileService } from '../services';
 import { IUsersRepo } from '../../repositories/repositories';
 import { IOTP } from '../../../pkg/otp/twilio';
 import { IS3Storage } from '../../../pkg/storage/s3';
-import { UserInfo } from '../dtos/user';
+import { Profile } from '../dtos/user';
 import ApiError from '../../domain/error';
 
 class ProfileService implements IProfileService {
@@ -13,11 +13,11 @@ class ProfileService implements IProfileService {
     this.s3Storage = s3Storage;
   }
 
-  async getByUser(id: string): Promise<UserInfo> {
+  async getByUser(id: string): Promise<Profile> {
     const user = await this.usersRepo.findOne(id);
     if (!user) throw new ApiError(401, 'Unauthorized! Cannot find user profile.');
     if (user.avatar) user.avatar = await this.s3Storage.getSignedUrlGet(user.avatar);
-    return new UserInfo(user.phone, user.fullName, user.email, user.avatar);
+    return new Profile(user.phone, user.fullName, user.email, user.avatar);
   }
 
   async updatePhone(id: string, phone: string, code: string): Promise<void> {
