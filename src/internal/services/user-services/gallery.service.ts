@@ -11,18 +11,19 @@ class GalleryService implements IGalleryService {
   }
 
   async getAllByUser(userId: string): Promise<{ albums: AlbumInfo[], photos: PhotoInfo[]; }> {
-    const albums = (await this.photosRepo.findAlbumsByUser(userId)).map((item) => new AlbumInfo(item.id, item.title, item.location, item.date));
+    const albumsRepo = await this.photosRepo.findAlbumsByUser(userId);
+    const albums = albumsRepo.map((item) => new AlbumInfo(item.id, item.title, item.location, item.date));
 
-    /// TODO: S3 getSeignedUrl
-    const photos = (await this.photosRepo.findAllByUser(userId)).map((item) => new PhotoInfo(item.id, item.key));
+    const photosRepo = await this.photosRepo.findAllByUser(userId);
+    const photos = await Promise.all(photosRepo.map(async (item) => new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
+
     return { albums, photos };
   }
 
   async getAllPhotosByAlbum(userId: string, albumId: string): Promise<PhotoInfo[]> {
     const photosRepo = await this.photosRepo.findAllByAlbum(userId, albumId);
-    const photos: PhotoInfo[] = [];
-    photosRepo.forEach(async (item) => photos.push(new PhotoInfo(item.id, item.key)));
-    // photosRepo.forEach(async (item) => photos.push(new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
+    const photos = await Promise.all(photosRepo.map(async (item) => new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
+
     return photos;
   }
 
