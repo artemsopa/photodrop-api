@@ -13,6 +13,10 @@ class UsersRepo implements IUsersRepo {
     return await this.repo.find();
   }
 
+  async findOne(id: string): Promise<User | null> {
+    return await this.repo.findOneBy({ id });
+  }
+
   async findOneByPhone(phone: string): Promise<User | null> {
     return await this.repo.findOne({ where: { phone } });
   }

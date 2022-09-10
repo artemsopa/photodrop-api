@@ -20,6 +20,7 @@ export interface IAlbumsRepo {
 
 export interface IUsersRepo {
   findAll(): Promise<User[]>;
+  findOne(id: string): Promise<User | null>;
   findOneByPhone(phone: string): Promise<User | null>
   create(user: User): Promise<User>;
   updatePhone(id: string, phone: string): Promise<void>;
