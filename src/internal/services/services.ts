@@ -1,14 +1,14 @@
 import { IAuthManager } from '../../pkg/auth/auth';
 import { AlbumInfo, AlbumInput } from './dtos/album';
 import { PhotoInfo, PhotoInput } from './dtos/photo';
-import { UserInfo } from './dtos/user';
+import { Profile, UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
 import { IOTP } from '../../pkg/otp/twilio';
 import Repositories from '../repositories/repositories';
-import AuthPhgraphsService from './phgraphs-services/auth.service';
-import UsersService from './phgraphs-services/users.service';
-import AlbumsService from './phgraphs-services/albums.service';
-import PhotosService from './phgraphs-services/photos.service';
+import AuthPhgraphsService from './phgraph-services/auth.service';
+import UsersService from './phgraph-services/users.service';
+import AlbumsService from './phgraph-services/albums.service';
+import PhotosService from './phgraph-services/photos.service';
 import AuthUsersService from './user-services/auth.service';
 import ProfileService from './user-services/profile.service';
 import GalleryService from './user-services/gallery.service';
@@ -39,7 +39,7 @@ export interface IAuthUsersService {
 }
 
 export interface IProfileService {
-  getByUser(id: string): Promise<UserInfo>;
+  getByUser(id: string): Promise<Profile>;
   updatePhone(id: string, phone: string, code: string): Promise<void>;
   updateEmail(id: string, email: string): Promise<void>;
   updateFullName(id: string, fullName: string): Promise<void>;
