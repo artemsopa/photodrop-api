@@ -1,4 +1,4 @@
-export class UserInfo {
+export class Profile {
   phone: string;
   fullName: string | null;
   email: string | null;
@@ -8,5 +8,13 @@ export class UserInfo {
     this.fullName = fullName;
     this.email = email;
     this.avatar = avatar;
+  }
+}
+
+export class UserInfo extends Profile {
+  id: string;
+  constructor(id: string, phone: string, fullName: string | null, email: string | null, avatar: string | null) {
+    super(phone, fullName, email, avatar);
+    this.id = id;
   }
 }
