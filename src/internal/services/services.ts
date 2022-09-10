@@ -39,9 +39,11 @@ export interface IAuthUsersService {
 }
 
 export interface IProfileService {
-  updatePhone(id: string, phone: string): Promise<void>;
+  getByUser(id: string): Promise<UserInfo>;
+  updatePhone(id: string, phone: string, code: string): Promise<void>;
   updateEmail(id: string, email: string): Promise<void>;
   updateFullName(id: string, fullName: string): Promise<void>;
+  getUploadAvatarUrl(id: string, contentType: string): Promise<any>;
   updateAvatar(id: string, avatar: string): Promise<void>;
 }
 
