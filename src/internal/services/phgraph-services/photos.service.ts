@@ -12,12 +12,10 @@ class PhotosService {
 
   async getUploadUrl(phgraphId: string, albumId: string, contentType: string) {
     await this.s3Storage.isImageType(contentType);
-    const key = `${phgraphId}/${albumId}/${uuidv4()}`;
+    const key = `albums/${phgraphId}/${albumId}/${uuidv4()}`;
     const url = await this.s3Storage.getSignedUrlPut(key, contentType);
     return {
-      // data: {
-      method: 'PUT', url, fields: [], headers: ['content-type'],
-      // }, key,
+      method: 'PUT', url, fields: [], headers: { 'Content-Type': contentType },
     };
   }
 

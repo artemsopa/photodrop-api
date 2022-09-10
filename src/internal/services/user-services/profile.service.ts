@@ -40,7 +40,7 @@ class ProfileService implements IProfileService {
     if (!user.avatar) user.avatar = `avatar/${id}/${uuidv4()}`;
     const url = await this.s3Storage.getSignedUrlPut(user.avatar, contentType);
     return {
-      method: 'PUT', url, fields: [], headers: ['content-type'],
+      method: 'PUT', url, fields: [], headers: { 'Content-Type': contentType },
     };
   }
 
