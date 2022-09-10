@@ -3,7 +3,6 @@ import { PhotoInput } from '../dtos/photo';
 import { IPhotosRepo } from '../../repositories/repositories';
 import { IS3Storage } from '../../../pkg/storage/s3';
 import Photo from '../../repositories/entities/photo';
-import ApiError from '../../domain/error';
 
 class PhotosService {
   constructor(private photosRepo: IPhotosRepo, private s3Storage: IS3Storage) {
@@ -12,7 +11,7 @@ class PhotosService {
   }
 
   async getUploadUrl(phgraphId: string, albumId: string, contentType: string) {
-    await this.isImageType(contentType);
+    await this.s3Storage.isImageType(contentType);
     const key = `${phgraphId}/${albumId}/${uuidv4()}`;
     const url = await this.s3Storage.getSignedUrlPut(key, contentType);
     return {
@@ -26,14 +25,6 @@ class PhotosService {
     const photos = photosInp.map((item) => new Photo(item.key, albumId, phgraphId, item.userId));
     await this.photosRepo.createMany(photos);
   }
-
-  private isImageType(contentType: string) {
-    return new Promise<boolean>((resolve, reject) => {
-      if (contentType.split('/')[0] !== 'image') {
-        reject(new ApiError(400, 'Invalid Content-Type!'));
-      } else resolve(true);
-    });
-  };
 }
 
 export default PhotosService;
