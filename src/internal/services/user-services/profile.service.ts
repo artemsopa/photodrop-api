@@ -37,7 +37,7 @@ class ProfileService implements IProfileService {
     await this.s3Storage.isImageType(contentType);
     const user = await this.usersRepo.findOne(id);
     if (!user) throw new ApiError(401, 'Unauthorized! Cannot find user profile.');
-    if (!user.avatar) user.avatar = `avatar/${id}/${uuidv4()}`;
+    if (!user.avatar) user.avatar = `avatars/${id}/${uuidv4()}`;
     const url = await this.s3Storage.getSignedUrlPut(user.avatar, contentType);
     return {
       method: 'PUT', url, fields: [], headers: { 'Content-Type': contentType },
