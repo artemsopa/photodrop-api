@@ -1,3 +1,5 @@
+import { PhotoInfo } from './photo';
+
 export class AlbumInput {
   title: string;
   location: string;
@@ -14,5 +16,13 @@ export class AlbumInfo extends AlbumInput {
   constructor(id: string, title: string, location: string, date: number) {
     super(title, location, date);
     this.id = id;
+  }
+}
+
+export class AlbumWithPhotos extends AlbumInfo {
+  photos: PhotoInfo[];
+  constructor(id: string, title: string, location: string, date: number, photos: PhotoInfo[]) {
+    super(id, title, location, date);
+    this.photos = photos;
   }
 }
