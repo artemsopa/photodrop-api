@@ -2,7 +2,8 @@ import { PhotoInfo } from '../dtos/photo';
 import { IGalleryService } from '../services';
 import { IPhotosRepo } from '../../repositories/repositories';
 import { IS3Storage } from '../../../pkg/storage/s3';
-import { AlbumInfo } from '../dtos/album';
+import { AlbumInfo, AlbumWithPhotos } from '../dtos/album';
+import ApiError from '../../domain/error';
 
 class GalleryService implements IGalleryService {
   constructor(private photosRepo: IPhotosRepo, private s3Storage: IS3Storage) {
@@ -20,11 +21,12 @@ class GalleryService implements IGalleryService {
     return { albums, photos };
   }
 
-  async getAllPhotosByAlbum(userId: string, albumId: string): Promise<PhotoInfo[]> {
-    const photosRepo = await this.photosRepo.findAllByAlbum(userId, albumId);
-    const photos = await Promise.all(photosRepo.map(async (item) => new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
+  async getAllPhotosByAlbum(userId: string, albumId: string): Promise<AlbumWithPhotos> {
+    const albumRepo = await this.photosRepo.findAllByAlbum(userId, albumId);
+    if (!albumRepo) throw new ApiError(404, 'Requested album not found!');
+    const photos = await Promise.all(albumRepo.photos.map(async (item) => new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))));
 
-    return photos;
+    return new AlbumWithPhotos(albumRepo.id, albumRepo.title, albumRepo.location, albumRepo.date, photos);
   }
 
   async payForAlbum(userId: string, albumId: string): Promise<void> {

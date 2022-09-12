@@ -1,5 +1,5 @@
 import { IAuthManager } from '../../pkg/auth/auth';
-import { AlbumInfo, AlbumInput } from './dtos/album';
+import { AlbumInfo, AlbumInput, AlbumWithPhotos } from './dtos/album';
 import { PhotoInfo, PhotoInput } from './dtos/photo';
 import { Profile, UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
@@ -49,7 +49,7 @@ export interface IProfileService {
 
 export interface IGalleryService {
   getAllByUser(userId: string): Promise<{ albums: AlbumInfo[], photos: PhotoInfo[]; }>;
-  getAllPhotosByAlbum(userId: string, albumId: string): Promise<PhotoInfo[]>;
+  getAllPhotosByAlbum(userId: string, albumId: string): Promise<AlbumWithPhotos>;
   payForAlbum(userId: string, albumId: string): Promise<void>;
 }
 
