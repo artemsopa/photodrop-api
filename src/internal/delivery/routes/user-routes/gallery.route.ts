@@ -33,8 +33,8 @@ class GalleryRoute {
     try {
       const userId = this.authMiddleware.getId(req);
       const query = validateSchema(idReqSchema, req.query);
-      const photos = await this.galleryService.getAllPhotosByAlbum(userId, query.id);
-      res.status(200).json(photos);
+      const album = await this.galleryService.getAllPhotosByAlbum(userId, query.id);
+      res.status(200).json(album);
     } catch (error) {
       next(error);
     }
