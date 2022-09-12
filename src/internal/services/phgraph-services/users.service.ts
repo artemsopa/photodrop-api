@@ -16,23 +16,6 @@ class UsersService implements IUsersService {
       item.avatar,
     ));
   }
-
-  async updatePhone(id: string, phone: string): Promise<void> {
-    await this.usersRepo.updatePhone(id, phone);
-  }
-
-  async updateEmail(id: string, email: string): Promise<void> {
-    await this.usersRepo.updateEmail(id, email);
-  }
-
-  async updateFullName(id: string, fullName: string): Promise<void> {
-    await this.usersRepo.updateFullName(id, fullName);
-  }
-
-  async updateAvatar(id: string, avatar: string): Promise<void> {
-    /// TODO: Upload to S3
-    await this.usersRepo.updateAvatar(id, avatar);
-  }
 }
 
 export default UsersService;
