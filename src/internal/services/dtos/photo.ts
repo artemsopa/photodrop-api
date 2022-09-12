@@ -1,9 +1,9 @@
 export class PhotoInput {
   key: string;
-  userId: string;
-  constructor(key: string, userId: string) {
+  users: string[];
+  constructor(key: string, users: string[]) {
     this.key = key;
-    this.userId = userId;
+    this.users = users;
   }
 }
 
