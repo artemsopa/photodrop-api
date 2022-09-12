@@ -7,7 +7,7 @@ export const getSignedUrlSchema = Joi.object({
 
 const photoSchema = Joi.object({
   key: Joi.string().required(),
-  userId: Joi.string().required(),
+  users: Joi.array().items(Joi.string().required()),
 });
 
 export const insertPhotosSchema = Joi.object({
