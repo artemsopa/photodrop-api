@@ -32,7 +32,7 @@ export interface IUsersRepo {
 export interface IPhotosRepo {
   findAlbumsByUser(userId: string): Promise<Album[]>;
   findAllByUser(userId: string): Promise<Photo[]>;
-  findAllByAlbum(userId: string, albumId: string): Promise<Photo[]>;
+  findAllByAlbum(userId: string, albumId: string): Promise<Album | null>;
   createMany(photos: Photo[]): Promise<void>;
   updateIsPaidByAlbum(userId: string, albumId: string): Promise<void>
 }

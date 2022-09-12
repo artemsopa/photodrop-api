@@ -25,8 +25,22 @@ class PhotosRepo implements IPhotosRepo {
     return await this.ds.getRepository(Photo).find({ where: { userId } });
   }
 
-  async findAllByAlbum(userId: string, albumId: string): Promise<Photo[]> {
-    return await this.ds.getRepository(Photo).find({ where: { userId, albumId } });
+  async findAllByAlbum(userId: string, albumId: string): Promise<Album | null> {
+    const album = await this.ds
+      .getRepository(Album)
+      .createQueryBuilder('albums')
+      .leftJoinAndSelect(
+        'albums.photos',
+        'photos',
+        'albums.id = :id',
+        {
+          id: albumId,
+        },
+      )
+      .where('photos.user_id = :userId', { userId })
+      .getOne();
+    return album;
+    // return await this.ds.getRepository(Photo).find({ where: { userId, albumId } });
   }
 
   async createMany(photos: Photo[]): Promise<void> {
