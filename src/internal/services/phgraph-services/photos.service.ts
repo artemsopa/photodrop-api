@@ -20,7 +20,8 @@ class PhotosService {
   }
 
   async createMany(phgraphId: string, albumId: string, photosInp: PhotoInput[]): Promise<void> {
-    const photos = photosInp.map((item) => new Photo(item.key, albumId, phgraphId, item.userId));
+    const photos: Photo[] = [];
+    photosInp.map((item) => photos.push(...item.users.map((userId) => new Photo(item.key, albumId, phgraphId, userId))));
     await this.photosRepo.createMany(photos);
   }
 }
