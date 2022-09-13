@@ -78,7 +78,7 @@ export default class Services {
 
   constructor(deps: Deps) {
     this.authPhgrapgs = new AuthPhgraphsService(deps.repos.phgraphs, deps.authManager);
-    this.users = new UsersService(deps.repos.users);
+    this.users = new UsersService(deps.repos.users, deps.s3Storage);
     this.almubs = new AlbumsService(deps.repos.albums);
     this.photos = new PhotosService(deps.repos.photos, deps.s3Storage);
 
