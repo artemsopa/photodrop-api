@@ -1,3 +1,4 @@
+import mime from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
 import { PhotoInput } from '../dtos/photo';
 import { IPhotosRepo } from '../../repositories/repositories';
@@ -12,10 +13,13 @@ class PhotosService {
 
   async getUploadUrl(phgraphId: string, albumId: string, contentType: string) {
     await this.s3Storage.isImageType(contentType);
-    const key = `albums/${phgraphId}/${albumId}/${uuidv4()}`;
+    const key = `albums/${phgraphId}/${albumId}/${uuidv4()}.${mime.extension(contentType)}`;
     const url = await this.s3Storage.getSignedUrlPut(key, contentType);
     return {
-      method: 'PUT', url, fields: [], headers: { 'Content-Type': contentType },
+      data: {
+        method: 'PUT', url, fields: [], headers: { 'Content-Type': contentType },
+      },
+      key,
     };
   }
 
