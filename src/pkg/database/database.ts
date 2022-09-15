@@ -20,7 +20,7 @@ const initDbConnection = async (
     password,
     database,
     entities: [Camerist, User, Album, Photo],
-    synchronize: true,
+    synchronize: false,
     logging: true,
   });
   await appDataSource.initialize();
