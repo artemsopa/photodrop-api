@@ -3,7 +3,7 @@ import { AlbumInfo, AlbumInput, AlbumWithPhotos } from './dtos/album';
 import { PhotoInfo, PhotoInput } from './dtos/photo';
 import { Profile, UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
-import { IOTP } from '../../pkg/otp/twilio';
+import { IOTP } from '../../pkg/otp/otp';
 import Repositories from '../repositories/repositories';
 import AuthPhgraphsService from './phgraph-services/auth.service';
 import UsersService from './phgraph-services/users.service';

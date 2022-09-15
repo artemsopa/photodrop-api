@@ -1,7 +1,7 @@
 import { IAuthUsersService } from '../services';
 import { IAuthManager } from '../../../pkg/auth/auth';
 import { IUsersRepo } from '../../repositories/repositories';
-import { IOTP } from '../../../pkg/otp/twilio';
+import { IOTP } from '../../../pkg/otp/otp';
 import User from '../../repositories/entities/user';
 
 class AuthUsersService implements IAuthUsersService {

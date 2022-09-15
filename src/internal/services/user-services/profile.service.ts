@@ -2,7 +2,7 @@ import mime from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
 import { IProfileService } from '../services';
 import { IUsersRepo } from '../../repositories/repositories';
-import { IOTP } from '../../../pkg/otp/twilio';
+import { IOTP } from '../../../pkg/otp/otp';
 import { IS3Storage } from '../../../pkg/storage/s3';
 import { Profile } from '../dtos/user';
 import ApiError from '../../domain/error';
