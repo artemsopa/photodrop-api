@@ -1,15 +1,11 @@
 import twilio, { Twilio } from 'twilio';
+import { IOTP } from './otp';
 import ApiError from '../../internal/domain/error';
 
-export interface IOTP {
-  sendCode(number: string): Promise<void>;
-  verifyNumber(number: string, code: string): Promise<void>;
-}
-
-export class ClientOTP implements IOTP {
+class TwilioOTP implements IOTP {
   private client: Twilio;
-  constructor(accaountSid: string, authToken: string, private serviceId: string) {
-    this.client = twilio(accaountSid, authToken);
+  constructor(accauntSid: string, authToken: string, private serviceId: string) {
+    this.client = twilio(accauntSid, authToken);
     this.serviceId = serviceId;
   }
 
@@ -17,6 +13,7 @@ export class ClientOTP implements IOTP {
     try {
       await this.client
         .verify
+        .v2
         .services(this.serviceId)
         .verifications
         .create({
@@ -33,6 +30,7 @@ export class ClientOTP implements IOTP {
     try {
       await this.client
         .verify
+        .v2
         .services(this.serviceId)
         .verificationChecks
         .create({
@@ -44,3 +42,5 @@ export class ClientOTP implements IOTP {
     }
   }
 }
+
+export default TwilioOTP;
