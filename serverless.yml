@@ -24,6 +24,7 @@ provider:
     JWT_TTL: ${env:JWT_TTL}
     S3_BUCKET: ${env:S3_BUCKET}
     S3_REGION: ${self:provider.region}
+    MB_API_KEY: ${env:MB_API_KEY}
     TWILIO_SID: ${env:TWILIO_SID}
     TWILIO_TOKEN: ${env:TWILIO_TOKEN}
     TWILIO_SERVICE: ${env:TWILIO_SERVICE}
@@ -53,10 +54,3 @@ functions:
           path: /{proxy+}
           method: any
           cors: true
-    vpc:
-      securityGroupIds:
-        - sg-0fe96f314854bde70
-      subnetIds:
-        - subnet-0f9af9f93b661a6ad
-        - subnet-0315b540cb1a0f6a0
-        - subnet-0f877550548ce2fa1
