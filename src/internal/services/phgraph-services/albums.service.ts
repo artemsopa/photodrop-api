@@ -2,7 +2,7 @@ import { IAlbumsRepo } from '../../repositories/repositories';
 import { AlbumInfo, AlbumInput } from '../dtos/album';
 import { IAlbumsService } from '../services';
 import Album from '../../repositories/entities/album';
-import ApiError from '../../domain/error';
+import ApiError from '../../../pkg/error/api.error';
 
 class AlbumsService implements IAlbumsService {
   constructor(private albumsRepo: IAlbumsRepo) {

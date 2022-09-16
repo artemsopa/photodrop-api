@@ -1,7 +1,7 @@
 import { IAuthPhgraphsService } from '../services';
 import { IAuthManager } from '../../../pkg/auth/auth';
 import { IPhgraphsRepo } from '../../repositories/repositories';
-import ApiError from '../../domain/error';
+import ApiError from '../../../pkg/error/api.error';
 
 class AuthPhgraphsService implements IAuthPhgraphsService {
   constructor(private phgraphRepo: IPhgraphsRepo, private authManager: IAuthManager) {

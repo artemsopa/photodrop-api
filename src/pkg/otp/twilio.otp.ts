@@ -1,6 +1,6 @@
 import twilio, { Twilio } from 'twilio';
 import { IOTP } from './otp';
-import ApiError from '../../internal/domain/error';
+import ApiError from '../error/api.error';
 
 class TwilioOTP implements IOTP {
   private client: Twilio;

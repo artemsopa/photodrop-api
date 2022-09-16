@@ -5,7 +5,7 @@ import { IUsersRepo } from '../../repositories/repositories';
 import { IOTP } from '../../../pkg/otp/otp';
 import { IS3Storage } from '../../../pkg/storage/s3';
 import { Profile } from '../dtos/user';
-import ApiError from '../../domain/error';
+import ApiError from '../../../pkg/error/api.error';
 
 class ProfileService implements IProfileService {
   constructor(private usersRepo: IUsersRepo, private otp: IOTP, private s3Storage: IS3Storage) {

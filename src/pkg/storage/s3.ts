@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import ApiError from '../../internal/domain/error';
+import ApiError from '../error/api.error';
 
 export interface IS3Storage {
   getSignedUrlPut(key: string, cType: string): Promise<string>;

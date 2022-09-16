@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { IAuthManager } from '../../../pkg/auth/auth';
-import ApiError from '../../domain/error';
+import ApiError from '../../../pkg/error/api.error';
 
 export class AuthMiddleware {
   constructor(private authManager: IAuthManager) {

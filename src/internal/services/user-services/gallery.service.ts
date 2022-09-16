@@ -3,7 +3,7 @@ import { IGalleryService } from '../services';
 import { IPhotosRepo } from '../../repositories/repositories';
 import { IS3Storage } from '../../../pkg/storage/s3';
 import { AlbumInfo, AlbumWithPhotos } from '../dtos/album';
-import ApiError from '../../domain/error';
+import ApiError from '../../../pkg/error/api.error';
 
 class GalleryService implements IGalleryService {
   constructor(private photosRepo: IPhotosRepo, private s3Storage: IS3Storage) {
