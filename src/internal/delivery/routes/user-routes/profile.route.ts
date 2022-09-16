@@ -72,7 +72,7 @@ class ProfileRoute {
     try {
       const userId = this.authMiddleware.getId(req);
       const body = validateSchema(getAvatarUrlSchema, req.body);
-      const result = await this.profileService.getUploadAvatarUrl(userId, body.contetType);
+      const result = await this.profileService.getUploadAvatarUrl(userId, body.contentType);
       res.status(200).json(result);
     } catch (error) {
       next(error);
