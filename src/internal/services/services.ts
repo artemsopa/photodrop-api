@@ -1,6 +1,6 @@
 import { IAuthManager } from '../../pkg/auth/auth';
 import { AlbumInfo, AlbumInput, AlbumWithPhotos } from './dtos/album';
-import { PhotoInfo } from './dtos/photo';
+import { PhotoInfo, PhotoItem } from './dtos/photo';
 import { Profile, UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
 import { IOTP } from '../../pkg/otp/otp';
@@ -25,7 +25,7 @@ export interface IAlbumsService {
 }
 
 export interface IPhotosService {
-  getUsersAndPhotosByAlbum(phgraphId: string, albumId: string): Promise<{ photos: PhotoInfo[], users: UserInfo[] }>
+  getUsersAndPhotosByAlbum(phgraphId: string, albumId: string): Promise<{ photos: PhotoItem[], users: UserInfo[] }>
   getUploadUrl(phgraphId: string, albumId: string, contentType: string): Promise<any>;
   createMany(phgraphId: string, albumId: string, keys: string[]): Promise<void>;
 }

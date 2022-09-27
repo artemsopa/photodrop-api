@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
 import { IOrdersRepo } from './repositories';
-import Photo from './entities/photo';
 import Album from './entities/album';
 import Order from './entities/order';
 
@@ -22,33 +21,38 @@ class OrdersRepo implements IOrdersRepo {
     return albums;
   }
 
-  async findAllPhotosByUser(userId: string): Promise<Photo[]> {
-    const photos = await this.ds
-      .getRepository(Photo)
-      .createQueryBuilder('photos')
-      .leftJoin(
-        'photos.orders',
-        'orders',
+  async findAllPhotosByUser(userId: string): Promise<Order[]> {
+    const orders = await this.ds
+      .getRepository(Order)
+      .createQueryBuilder('orders')
+      .leftJoinAndSelect(
+        'orders.photo',
+        'photos',
+        'orders.user_id = :id',
+        {
+          id: userId,
+        },
       )
-      .where('orders.user_id = :userId', { userId })
       .getMany();
-    return photos;
+    return orders;
   }
 
   async findAllByAlbum(userId: string, albumId: string): Promise<Album | null> {
-    const album = await this.ds
-      .getRepository(Album)
-      .createQueryBuilder('albums')
+    const album = await this.ds.getRepository(Album).findOneBy({ id: albumId });
+    if (!album) return null;
+    album.orders = await this.ds
+      .getRepository(Order)
+      .createQueryBuilder('orders')
       .leftJoinAndSelect(
-        'albums.photos',
+        'orders.photo',
         'photos',
-        'albums.id = :id',
+        'orders.album_id = :id',
         {
           id: albumId,
         },
       )
-      .where('photos.user_id = :userId', { userId })
-      .getOne();
+      .where('orders.user_id = :userId', { userId })
+      .getMany();
     return album;
   }
 

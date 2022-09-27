@@ -4,7 +4,7 @@ import { IPhotosRepo, IUsersRepo } from '../../repositories/repositories';
 import { IS3Storage } from '../../../pkg/storage/s3';
 import Photo from '../../repositories/entities/photo';
 import { UserInfo } from '../dtos/user';
-import { PhotoInfo } from '../dtos/photo';
+import { PhotoItem } from '../dtos/photo';
 
 class PhotosService {
   constructor(private photosRepo: IPhotosRepo, private usersRepo: IUsersRepo, private s3Storage: IS3Storage) {
@@ -12,10 +12,10 @@ class PhotosService {
     this.s3Storage = s3Storage;
   }
 
-  async getUsersAndPhotosByAlbum(phgraphId: string, albumId: string): Promise<{ photos: PhotoInfo[], users: UserInfo[] }> {
+  async getUsersAndPhotosByAlbum(phgraphId: string, albumId: string): Promise<{ photos: PhotoItem[], users: UserInfo[] }> {
     const photosRepo = await this.photosRepo.findAllByAlbum(phgraphId, albumId);
     const photos = await Promise.all(
-      photosRepo.map(async (item) => new PhotoInfo(item.id, await this.s3Storage.getSignedUrlGet(item.key))),
+      photosRepo.map(async (item) => new PhotoItem(item.id, await this.s3Storage.getSignedUrlGet(item.key))),
     );
 
     const usersRepo = await this.usersRepo.findAll();

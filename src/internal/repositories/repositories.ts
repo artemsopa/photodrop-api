@@ -39,7 +39,7 @@ export interface IUsersRepo {
 
 export interface IOrdersRepo {
   findAllAlbumsByUser(userId: string): Promise<Album[]>;
-  findAllPhotosByUser(userId: string): Promise<Photo[]>;
+  findAllPhotosByUser(userId: string): Promise<Order[]>;
   findAllByAlbum(userId: string, albumId: string): Promise<Album | null>;
   createMany(orders: Order[]): Promise<void>;
   updateIsPaidByAlbum(userId: string, albumId: string): Promise<void>;
