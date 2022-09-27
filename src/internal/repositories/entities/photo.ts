@@ -2,8 +2,8 @@ import {
   Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany,
 } from 'typeorm';
 import Album from './album';
+import Order from './order';
 import Phgraph from './phgraph';
-import User from './user';
 
 @Entity({ name: 'photos' })
 export default class Photo {
@@ -13,8 +13,11 @@ export default class Photo {
   @Column()
     key: string;
 
-  @Column({ name: 'is_paid' })
-    isPaid: boolean;
+  @Column({ name: 'phgraph_id' })
+    phgraphId: string;
+  @ManyToOne(() => Phgraph, phgraph => phgraph.photos, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'phgraph_id' })
+    phgraph: Phgraph;
 
   @Column({ name: 'album_id' })
     albumId: string;
@@ -22,23 +25,12 @@ export default class Photo {
   @JoinColumn({ name: 'album_id' })
     album: Album;
 
-  @Column({ name: 'phgraph_id' })
-    phgraphId: string;
-  @ManyToOne(() => Phgraph, phgraph => phgraph.photos, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'phgraph_id' })
-    phgraph: Phgraph;
+  @OneToMany(() => Order, order => order.photo)
+    orders: Order[];
 
-  @Column({ name: 'user_id' })
-    userId: string;
-  @ManyToOne(() => User, user => user.photos, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
-    user: User;
-
-  constructor(key: string, albumId: string, phgraphId: string, userId: string) {
+  constructor(key: string, albumId: string, phgraphId: string) {
     this.key = key;
-    this.isPaid = false;
     this.albumId = albumId;
     this.phgraphId = phgraphId;
-    this.userId = userId;
   }
 }

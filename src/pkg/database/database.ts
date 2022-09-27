@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import User from '../../internal/repositories/entities/user';
+import Phgraph from '../../internal/repositories/entities/phgraph';
 import Album from '../../internal/repositories/entities/album';
 import Photo from '../../internal/repositories/entities/photo';
-import Camerist from '../../internal/repositories/entities/phgraph';
+import User from '../../internal/repositories/entities/user';
+import Order from '../../internal/repositories/entities/order';
 
 const initDbConnection = async (
   host: string,
@@ -19,7 +20,7 @@ const initDbConnection = async (
     username,
     password,
     database,
-    entities: [Camerist, User, Album, Photo],
+    entities: [Phgraph, Album, Photo, User, Order],
     synchronize: false,
     logging: true,
   });

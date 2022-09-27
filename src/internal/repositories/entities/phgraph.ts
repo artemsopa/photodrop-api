@@ -2,6 +2,7 @@ import {
   Entity, PrimaryGeneratedColumn, Column, OneToMany,
 } from 'typeorm';
 import Album from './album';
+import Order from './order';
 import Photo from './photo';
 
 @Entity({ name: 'phgraphs' })
@@ -26,6 +27,9 @@ export default class Phgraph {
 
   @OneToMany(() => Photo, photo => photo.phgraph)
     photos: Photo[];
+
+  @OneToMany(() => Order, order => order.phgraph)
+    orders: Order[];
 
   constructor(login: string, password: string, fullName: string | null, email: string | null) {
     this.login = login;

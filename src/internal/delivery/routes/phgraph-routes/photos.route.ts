@@ -3,7 +3,7 @@ import {
 } from 'express';
 import { IPhotosService } from '../../../services/services';
 import { AuthMiddleware } from '../../middlewares/auth.middleware';
-import { insertPhotosSchema, getSignedUrlSchema } from '../joi-schemas/photo.schema';
+import { getSignedUrlSchema, idReqSchema, keysSchema } from '../joi-schemas/photo.schema';
 import validateSchema from '../joi-schemas/schema';
 
 class PhotosRoute {
@@ -14,8 +14,20 @@ class PhotosRoute {
 
   initRoutes() {
     return Router()
+      .get('/album', this.getAllByAlbum.bind(this))
       .post('/s3url', this.getUploadUrl.bind(this))
       .post('/', this.createPhotos.bind(this));
+  }
+
+  private async getAllByAlbum(req: Request, res: Response, next: NextFunction) {
+    try {
+      const phgraphId = this.authMiddleware.getId(req);
+      const query = validateSchema(idReqSchema, req.query);
+      const data = await this.photosService.getUsersAndPhotosByAlbum(phgraphId, query.id);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async getUploadUrl(req: Request, res: Response, next: NextFunction) {
@@ -32,8 +44,8 @@ class PhotosRoute {
   private async createPhotos(req: Request, res: Response, next: NextFunction) {
     try {
       const phgraphId = this.authMiddleware.getId(req);
-      const body = validateSchema(insertPhotosSchema, req.body);
-      await this.photosService.createMany(phgraphId, body.albumId, body.photos);
+      const body = validateSchema(keysSchema, req.body);
+      await this.photosService.createMany(phgraphId, body.albumId, body.keys);
       res.status(200).json({ message: 'Photos successfully uploaded!' });
     } catch (error) {
       next(error);

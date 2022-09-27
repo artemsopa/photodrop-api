@@ -1,25 +1,22 @@
 import { IAuthManager } from '../../pkg/auth/auth';
 import { AlbumInfo, AlbumInput, AlbumWithPhotos } from './dtos/album';
-import { PhotoInfo, PhotoInput } from './dtos/photo';
+import { PhotoInfo } from './dtos/photo';
 import { Profile, UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
 import { IOTP } from '../../pkg/otp/otp';
 import Repositories from '../repositories/repositories';
 import AuthPhgraphsService from './phgraph-services/auth.service';
-import UsersService from './phgraph-services/users.service';
 import AlbumsService from './phgraph-services/albums.service';
 import PhotosService from './phgraph-services/photos.service';
 import AuthUsersService from './user-services/auth.service';
 import ProfileService from './user-services/profile.service';
 import GalleryService from './user-services/gallery.service';
+import { OrderInput } from './dtos/order';
+import OrdersService from './phgraph-services/orders.service';
 
 // Photograpgs Services
 export interface IAuthPhgraphsService {
   signIn(login: string, password: string): Promise<string>;
-}
-
-export interface IUsersService {
-  getAll(): Promise<UserInfo[]>;
 }
 
 export interface IAlbumsService {
@@ -28,8 +25,13 @@ export interface IAlbumsService {
 }
 
 export interface IPhotosService {
+  getUsersAndPhotosByAlbum(phgraphId: string, albumId: string): Promise<{ photos: PhotoInfo[], users: UserInfo[] }>
   getUploadUrl(phgraphId: string, albumId: string, contentType: string): Promise<any>;
-  createMany(phgraphId: string, albumId: string, photosInp: PhotoInput[]): Promise<void>;
+  createMany(phgraphId: string, albumId: string, keys: string[]): Promise<void>;
+}
+
+export interface IOrdersService {
+  createMany(phgraphId: string, albumId: string, ordersInp: OrderInput[]): Promise<void>;
 }
 
 // Users Services
@@ -68,9 +70,9 @@ export class Deps {
 
 export default class Services {
   authPhgrapgs: IAuthPhgraphsService;
-  users: IUsersService;
   almubs: IAlbumsService;
   photos: IPhotosService;
+  orders: IOrdersService;
 
   authUsers: IAuthUsersService;
   profile: IProfileService;
@@ -78,12 +80,12 @@ export default class Services {
 
   constructor(deps: Deps) {
     this.authPhgrapgs = new AuthPhgraphsService(deps.repos.phgraphs, deps.authManager);
-    this.users = new UsersService(deps.repos.users, deps.s3Storage);
     this.almubs = new AlbumsService(deps.repos.albums);
-    this.photos = new PhotosService(deps.repos.photos, deps.s3Storage);
+    this.photos = new PhotosService(deps.repos.photos, deps.repos.users, deps.s3Storage);
+    this.orders = new OrdersService(deps.repos.orders);
 
     this.authUsers = new AuthUsersService(deps.repos.users, deps.authManager, deps.otp);
     this.profile = new ProfileService(deps.repos.users, deps.otp, deps.s3Storage);
-    this.gallery = new GalleryService(deps.repos.photos, deps.s3Storage);
+    this.gallery = new GalleryService(deps.repos.orders, deps.s3Storage);
   }
 }
