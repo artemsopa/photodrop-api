@@ -1,5 +1,7 @@
 import { IAuthManager } from '../../pkg/auth/auth';
-import { AlbumInfo, AlbumInput, AlbumWithPhotos } from './dtos/album';
+import {
+  AlbumEmp, AlbumInfo, AlbumInput, AlbumWithPhotos,
+} from './dtos/album';
 import { PhotoInfo, PhotoItem } from './dtos/photo';
 import { Profile, UserInfo } from './dtos/user';
 import { IS3Storage } from '../../pkg/storage/s3';
@@ -20,7 +22,7 @@ export interface IAuthPhgraphsService {
 }
 
 export interface IAlbumsService {
-  getAll(phgraphId: string): Promise<AlbumInfo[]>;
+  getAll(phgraphId: string): Promise<AlbumEmp[]>;
   create(phgraphId: string, album: AlbumInput): Promise<void>;
 }
 

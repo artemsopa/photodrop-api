@@ -11,7 +11,7 @@ export class AlbumInput {
   }
 }
 
-export class AlbumInfo extends AlbumInput {
+export class AlbumEmp extends AlbumInput {
   id: string;
   constructor(id: string, title: string, location: string, date: number) {
     super(title, location, date);
@@ -19,10 +19,20 @@ export class AlbumInfo extends AlbumInput {
   }
 }
 
-export class AlbumWithPhotos extends AlbumInfo {
+export class AlbumInfo extends AlbumEmp {
+  url: string | null;
+  constructor(id: string, url: string | null, title: string, location: string, date: number) {
+    super(id, title, location, date);
+    this.url = url;
+  }
+}
+
+export class AlbumWithPhotos extends AlbumInput {
+  id: string;
   photos: PhotoInfo[];
   constructor(id: string, title: string, location: string, date: number, photos: PhotoInfo[]) {
-    super(id, title, location, date);
+    super(title, location, date);
+    this.id = id;
     this.photos = photos;
   }
 }

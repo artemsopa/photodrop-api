@@ -1,5 +1,5 @@
 import { IAlbumsRepo } from '../../repositories/repositories';
-import { AlbumInfo, AlbumInput } from '../dtos/album';
+import { AlbumEmp, AlbumInput } from '../dtos/album';
 import { IAlbumsService } from '../services';
 import Album from '../../repositories/entities/album';
 import ApiError from '../../../pkg/error/api.error';
@@ -9,8 +9,8 @@ class AlbumsService implements IAlbumsService {
     this.albumsRepo = albumsRepo;
   }
 
-  async getAll(phgraphId: string): Promise<AlbumInfo[]> {
-    return (await this.albumsRepo.findAll(phgraphId)).map((item) => new AlbumInfo(
+  async getAll(phgraphId: string): Promise<AlbumEmp[]> {
+    return (await this.albumsRepo.findAll(phgraphId)).map((item) => new AlbumEmp(
       item.id,
       item.title,
       item.location,

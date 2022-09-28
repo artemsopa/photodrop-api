@@ -21,6 +21,24 @@ class OrdersRepo implements IOrdersRepo {
     return albums;
   }
 
+  async findLastPhotoOrder(userId: string, albumId: string): Promise<Order | null> {
+    const order = await this.ds
+      .getRepository(Order)
+      .createQueryBuilder('orders')
+      .leftJoinAndSelect(
+        'orders.photo',
+        'photos',
+        'orders.album_id = :id',
+        {
+          id: albumId,
+        },
+      )
+      .where('orders.user_id = :userId', { userId })
+      .orderBy('RAND()')
+      .getOne();
+    return order;
+  }
+
   async findAllPhotosByUser(userId: string): Promise<Order[]> {
     const orders = await this.ds
       .getRepository(Order)
@@ -37,10 +55,25 @@ class OrdersRepo implements IOrdersRepo {
     return orders;
   }
 
-  async findAllByAlbum(userId: string, albumId: string): Promise<Album | null> {
-    const album = await this.ds.getRepository(Album).findOneBy({ id: albumId });
-    if (!album) return null;
-    album.orders = await this.ds
+  async findAlbum(userId: string, albumId: string): Promise<Album | null> {
+    const album = await this.ds
+      .getRepository(Album)
+      .createQueryBuilder('albums')
+      .leftJoin(
+        'albums.orders',
+        'orders',
+        'orders.album_id = :id',
+        {
+          id: albumId,
+        },
+      )
+      .where('orders.user_id = :userId', { userId })
+      .getOne();
+    return album;
+  }
+
+  async findAllByAlbum(userId: string, albumId: string): Promise<Order[]> {
+    const orders = await this.ds
       .getRepository(Order)
       .createQueryBuilder('orders')
       .leftJoinAndSelect(
@@ -53,7 +86,7 @@ class OrdersRepo implements IOrdersRepo {
       )
       .where('orders.user_id = :userId', { userId })
       .getMany();
-    return album;
+    return orders;
   }
 
   async createMany(orders: Order[]): Promise<void> {
