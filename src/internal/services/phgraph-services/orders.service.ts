@@ -8,7 +8,8 @@ class OrdersService {
   }
 
   async createMany(phgraphId: string, albumId: string, ordersInp: OrderInput[]): Promise<void> {
-    const orders = ordersInp.map((item) => new Order(phgraphId, albumId, item.photoId, item.userId));
+    const orders: Order[] = [];
+    ordersInp.forEach((item) => orders.push(...item.users.map((userId) => new Order(phgraphId, albumId, item.photoId, userId))));
     await this.ordersRepo.createMany(orders);
   }
 }

@@ -1,8 +1,8 @@
 export class OrderInput {
   photoId: string;
-  userId: string;
-  constructor(photoId: string, userId: string) {
+  users: string[];
+  constructor(photoId: string, users: string[]) {
     this.photoId = photoId;
-    this.userId = userId;
+    this.users = users;
   }
 }
