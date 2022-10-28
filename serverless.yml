@@ -1,56 +1,216 @@
 org: artemsopa
-app: photodrop-api
+app: photodrop
 service: photodrop-api
 frameworkVersion: '3'
 useDotenv: true
 
 plugins:
-  - serverless-webpack
+  - serverless-plugin-typescript
+  - serverless-tscpaths
   - serverless-offline
-  - serverless-export-env
 
 provider:
   name: aws
   runtime: nodejs14.x
   region: eu-central-1
   stage: ${opt:stage, 'dev'}
+  httpApi:
+    cors: true
+
   environment:
-    DB_HOST: ${env:DB_HOST}
-    DB_PORT: ${env:DB_PORT}
-    DB_USER: ${env:DB_USER}
-    DB_PASSWORD: ${env:DB_PASSWORD}
-    DB_NAME: ${env:DB_NAME}
+    DB_HOST: ${self:custom.DB_HOST}
+    DB_PORT: ${self:custom.DB_PORT}
+    DB_USER: ${self:custom.DB_USER}
+    DB_PASSWORD: ${self:custom.DB_PASSWORD}
+    DB_NAME: ${self:custom.DB_NAME}
     JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
     JWT_TTL: ${env:JWT_TTL}
-    S3_BUCKET: ${env:S3_BUCKET}
+    S3_BUCKET: ${self:custom.BUCKET_NAME}
     S3_REGION: ${self:provider.region}
-    MB_API_KEY: ${env:MB_API_KEY}
     TWILIO_SID: ${env:TWILIO_SID}
     TWILIO_TOKEN: ${env:TWILIO_TOKEN}
     TWILIO_SERVICE: ${env:TWILIO_SERVICE}
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - ec2:CreateNetworkInterface
-        - ec2:DescribeNetworkInterfaces
-        - ec2:DeleteNetworkInterface
-      Resource:
-        - "*"
 
-custom: 
-  webpack: 
-    includeModules: 
-      true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource:
+            {
+              "Fn::Join":
+                [
+                  "arn:aws:s3:::${self:custom.BUCKET_NAME}",
+                  ["arn:aws:s3:::${self:custom.BUCKET_NAME}", "/*"],
+                ],
+            }
+
+custom:
+  BUCKET_NAME: photodrop-bucket-${self:provider.stage}
+  DB_NAME: photodrop_db_${self:provider.stage}
+  DB_USER: ${env:DB_USER}
+  DB_PASSWORD: ${env:DB_PASSWORD}
+  DB_HOST: !GetAtt PostgreSqlRDSInstance.Endpoint.Address
+  DB_PORT: !GetAtt PostgreSqlRDSInstance.Endpoint.Port
 
 functions:
-  api:
-    handler: ./src/index.handler
+  hello:
+    handler: ./src/index.hello
     events:
-      - http:
-          path: /
+      - httpApi:
+          path: /hello
           method: get
-          cors: true
-      - http:
-          path: /{proxy+}
-          method: any
-          cors: true
+
+  login:
+    handler: ./src/index.login
+    events:
+      - httpApi:
+          path: /photographers/auth/login
+          method: post
+
+  getAllAlbums:
+    handler: ./src/index.getAllAlbums
+    events:
+      - httpApi:
+          path: /photographers/albums
+          method: get
+  createAlbum:
+    handler: ./src/index.createAlbum
+    events:
+      - httpApi:
+          path: /photographers/albums
+          method: post
+
+  getUsersAndPhotosByAlbum:
+    handler: ./src/index.getUsersAndPhotosByAlbum
+    events:
+      - httpApi:
+          path: /photographers/photos/album
+          method: get
+  createPhotos:
+    handler: ./src/index.createPhotos
+    events:
+      - httpApi:
+          path: /photographers/photos
+          method: post
+  getPhotoUploadUrl:
+    handler: ./src/index.getPhotoUploadUrl
+    events:
+      - httpApi:
+          path: /photographers/photos/s3url
+          method: post
+
+  createOrder:
+    handler: ./src/index.createOrder
+    events:
+      - httpApi:
+          path: /photographers/orders
+          method: post
+
+  sendVerificationCode:
+    handler: ./src/index.sendVerificationCode
+    events:
+      - httpApi:
+          path: /users/auth/send-code
+          method: post
+  verifyUser:
+    handler: ./src/index.verifyUser
+    events:
+      - httpApi:
+          path: /users/auth/verify-user
+          method: post
+
+  getGalleryByUser:
+    handler: ./src/index.getGalleryByUser
+    events:
+      - httpApi:
+          path: /users/gallery
+          method: get
+  getAllPhotosByGalleryAlbum:
+    handler: ./src/index.getAllPhotosByGalleryAlbum
+    events:
+      - httpApi:
+          path: /users/gallery/album
+          method: get
+  payForGalleryAlbum:
+    handler: ./src/index.payForGalleryAlbum
+    events:
+      - httpApi:
+          path: /users/gallery/album
+          method: put
+
+  getProfile:
+    handler: ./src/index.getProfile
+    events:
+      - httpApi:
+          path: /users/profile
+          method: get
+  sendProfileVerificationCode:
+    handler: ./src/index.sendProfileVerificationCode
+    events:
+      - httpApi:
+          path: /users/profile/send-code
+          method: post
+  updatePhone:
+    handler: ./src/index.updatePhone
+    events:
+      - httpApi:
+          path: /users/profile/phone
+          method: put
+  updateEmail:
+    handler: ./src/index.login
+    events:
+      - httpApi:
+          path: /users/profile/email
+          method: put
+  updateFullName:
+    handler: ./src/index.updateFullName
+    events:
+      - httpApi:
+          path: /users/profile/name
+          method: put
+  getAvatarUploadUrl:
+    handler: ./src/index.getAvatarUploadUrl
+    events:
+      - httpApi:
+          path: /users/profile/avatar/s3url
+          method: post
+  updateAvatar:
+    handler: ./src/index.updateAvatar
+    events:
+      - httpApi:
+          path: /users/profile/avatar
+          method: post
+
+resources:
+  Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.BUCKET_NAME}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+              MaxAge: 3000
+    
+    PostgreSqlRDSInstance:
+      Type: AWS::RDS::DBInstance
+      Properties:
+        MasterUsername: ${self:custom.DB_USER}
+        MasterUserPassword: ${self:custom.DB_PASSWORD}
+        AllocatedStorage: 5
+        DBName: ${self:custom.DB_NAME}
+        DBInstanceClass: db.t3.micro
+        Engine: postgres
+        PubliclyAccessible: true

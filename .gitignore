@@ -1,9 +1,6 @@
-# package directories
 node_modules
-jspm_packages
-# Serverless directories
 .serverless
-# WebPack
-.webpack
-# Environment
+serverless_sdk
+.build
 .env
+.DS_STORE

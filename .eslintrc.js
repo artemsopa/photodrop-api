@@ -31,5 +31,8 @@ module.exports = {
     'no-extra-semi': 0,
     'consistent-return': 0,
     'prefer-promise-reject-errors': 0,
+    'object-curly-newline': 0,
+    'no-unused-expressions': 0,
+    'no-restricted-syntax': 0,
   },
 };
