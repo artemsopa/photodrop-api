@@ -9,7 +9,7 @@ export class AlbumService {
   }
 
   public getAllByPhotographer = async (photographerId: string) => {
-    await this.ds.initialize().catch();
+    if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     const data = await this.ds.getRepository(Album).find({ where: { photographerId } });
     const albums = data.map((item) => new AlbumItem(item.id, item.title, item.location, item.date));
@@ -17,7 +17,7 @@ export class AlbumService {
   };
 
   public create = async (photographerId: string, album: AlbumInput) => {
-    await this.ds.initialize().catch();
+    if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     const data = await this.ds.getRepository(Album).findOne({
       where: {

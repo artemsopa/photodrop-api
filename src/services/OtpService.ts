@@ -15,7 +15,7 @@ export class OtpService {
   };
 
   public verifyUser = async (phone: string, code: string) => {
-    await this.ds.initialize().catch();
+    if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     await this.otp.verifyNumber(phone, code);
     let user = await this.ds.getRepository(User).findOne({ where: { phone } });

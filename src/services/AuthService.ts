@@ -10,7 +10,7 @@ export class AuthService {
   }
 
   public login = async (login: string, password: string) => {
-    await this.ds.initialize().catch();
+    if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     const photographer = await this.ds.getRepository(Photographer).findOne({ where: { login } });
     if (!photographer) throw ApiError.unauthorized('Incorrect login');

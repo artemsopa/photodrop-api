@@ -8,7 +8,7 @@ export class OrderService {
   }
 
   public createMany = async (photographerId: string, albumId: string, ordersInput: OrderInput[]) => {
-    await this.ds.initialize().catch();
+    if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     const orders: Order[] = [];
     ordersInput.forEach((item) => orders.push(...item.users.map(
