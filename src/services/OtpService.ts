@@ -11,13 +11,11 @@ export class OtpService {
   }
 
   public sendVerificationCode = async (phone: string) => {
-    await this.ds.initialize();
-
     await this.otp.sendCode(phone);
   };
 
   public verifyUser = async (phone: string, code: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     await this.otp.verifyNumber(phone, code);
     let user = await this.ds.getRepository(User).findOne({ where: { phone } });

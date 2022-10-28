@@ -15,7 +15,7 @@ export class ProfileService {
   }
 
   public getByUser = async (id: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const user = await this.ds.getRepository(User).findOneBy({ id });
     if (!user) throw ApiError.unauthorized('Cannot find user profile');
@@ -24,7 +24,7 @@ export class ProfileService {
   };
 
   public sendVerificationCode = async (id: string, phone: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), phone } });
     if (!user) throw ApiError.badRequest('Phone already in use');
@@ -32,7 +32,7 @@ export class ProfileService {
   };
 
   public updatePhone = async (id: string, phone: string, code: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), phone } });
     if (!user) throw ApiError.badRequest('Phone already in use');
@@ -41,7 +41,7 @@ export class ProfileService {
   };
 
   public updateEmail = async (id: string, email: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), email } });
     if (!user) throw ApiError.badRequest('Email already in use');
@@ -49,7 +49,7 @@ export class ProfileService {
   };
 
   public updateFullName = async (id: string, fullName: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), fullName } });
     if (!user) throw ApiError.badRequest('Full name already in use');
@@ -57,7 +57,7 @@ export class ProfileService {
   };
 
   public getAvatarUploadUrl = async (id: string, contentType: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     await this.bucket.isImageConentType(contentType);
     const user = await this.ds.getRepository(User).findOneBy({ id });
@@ -76,7 +76,7 @@ export class ProfileService {
   };
 
   public updateAvatar = async (id: string, avatar: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const user = await this.ds.getRepository(User).findOneBy({ id });
     if (!user) throw ApiError.unauthorized('Cannot find user profile');

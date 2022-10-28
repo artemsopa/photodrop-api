@@ -14,7 +14,7 @@ export class PhotoService {
   }
 
   public getUsersAndPhotosByAlbum = async (photographerId: string, albumId: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const dataPhotos = await this.ds.getRepository(Photo).find({ where: { photographerId, albumId } });
     const photos = await Promise.all(
@@ -40,7 +40,7 @@ export class PhotoService {
   };
 
   public getUploadUrl = async (photographerId: string, albumId: string, contentType: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     await this.bucket.isImageConentType(contentType);
     const key = `albums/${photographerId}/${albumId}/${uuidv4()}.${extension(contentType)}`;
@@ -57,7 +57,7 @@ export class PhotoService {
   };
 
   public createMany = async (photographerId: string, albumId: string, keys: string[]) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const photos = keys.map((key) => new Photo(key, albumId, photographerId));
     await this.ds.getRepository(Photo).save(photos);

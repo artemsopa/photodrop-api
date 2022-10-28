@@ -11,7 +11,7 @@ export class GalleryService {
   }
 
   public getAllByUser = async (userId: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const data = await this.ds.getRepository(Order).createQueryBuilder('orders')
       .leftJoinAndSelect('albums.orders', 'orders')
@@ -62,7 +62,7 @@ export class GalleryService {
   };
 
   public getAllPhotosByAlbum = async (userId: string, albumId: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     const data = await this.ds.getRepository(Order).createQueryBuilder('orders')
       .leftJoinAndSelect('albums.orders', 'orders')
@@ -88,7 +88,7 @@ export class GalleryService {
   };
 
   public payForAlbum = async (userId: string, albumId: string) => {
-    await this.ds.initialize();
+    await this.ds.initialize().catch();
 
     await this.ds.getRepository(Order).update({ userId, albumId }, { isPaid: true });
   };
