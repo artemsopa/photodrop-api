@@ -56,39 +56,26 @@ const otpService = new OtpService(ds, jwt, otp);
 const profileService = new ProfileService(ds, otp, bucket);
 const galleryService = new GalleryService(ds, bucket);
 
-const authHandler = new AuthHandler(authService);
-const albumHandler = new AlbumHandler(albumService, jwt);
-const photoHandler = new PhotoHandler(photoService, jwt);
-const orderHandler = new OrderHandler(orderService, jwt);
-const otpHandler = new OtpHandler(otpService);
-const profileHandler = new ProfileHandler(profileService, jwt);
-const galleryHandler = new GalleryHandler(galleryService, jwt);
+const handlers = {
+  ...new AuthHandler(authService),
+  ...new AlbumHandler(albumService, jwt),
+  ...new PhotoHandler(photoService, jwt),
+  ...new OrderHandler(orderService, jwt),
+  ...new OtpHandler(otpService),
+  ...new ProfileHandler(profileService, jwt),
+  ...new GalleryHandler(galleryService, jwt),
+};
 
 export const {
   login,
-} = authHandler;
-
-export const {
   getAllAlbums,
   createAlbum,
-} = albumHandler;
-
-export const {
   getUsersAndPhotosByAlbum,
   getPhotoUploadUrl,
   createPhotos,
-} = photoHandler;
-
-export const {
   createOrder,
-} = orderHandler;
-
-export const {
   sendVerificationCode,
   verifyUser,
-} = otpHandler;
-
-export const {
   getProfile,
   sendProfileVerificationCode,
   updatePhone,
@@ -96,10 +83,7 @@ export const {
   updateFullName,
   updateAvatar,
   getAvatarUploadUrl,
-} = profileHandler;
-
-export const {
   getGalleryByUser,
   getAllPhotosByGalleryAlbum,
   payForGalleryAlbum,
-} = galleryHandler;
+} = handlers;
