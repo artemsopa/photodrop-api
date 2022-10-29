@@ -161,7 +161,7 @@ functions:
           path: /users/profile/phone
           method: put
   updateEmail:
-    handler: ./src/index.login
+    handler: ./src/index.updateEmail
     events:
       - httpApi:
           path: /users/profile/email
@@ -183,7 +183,7 @@ functions:
     events:
       - httpApi:
           path: /users/profile/avatar
-          method: post
+          method: put
 
 resources:
   Resources:
