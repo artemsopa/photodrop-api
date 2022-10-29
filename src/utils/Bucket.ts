@@ -3,8 +3,8 @@ import { ApiError } from '@/utils/ApiError';
 
 export class Bucket {
   private readonly s3: S3;
-  constructor(private readonly bucketName: string, region: string) {
-    this.s3 = new S3({ region });
+  constructor(private readonly bucketName: string) {
+    this.s3 = new S3();
   }
 
   public getSignedUrlPutObject = async (key: string, contentType: string) => await this.s3.getSignedUrlPromise(

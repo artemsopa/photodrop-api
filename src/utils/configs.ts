@@ -18,7 +18,10 @@ export const initConfigs = () => {
 
     TWILIO_SID,
     TWILIO_TOKEN,
-    TWILIO_SERVICE,
+    TWILIO_VERIFY_SERVICE,
+    TWILIO_NOTIFY_SERVICE,
+
+    SQS_URL,
   } = process.env;
 
   if (!DB_HOST
@@ -35,7 +38,10 @@ export const initConfigs = () => {
 
       || !TWILIO_SID
       || !TWILIO_TOKEN
-      || !TWILIO_SERVICE) {
+      || !TWILIO_VERIFY_SERVICE
+      || !TWILIO_NOTIFY_SERVICE
+
+      || !SQS_URL) {
     throw new Error('ERROR! Invalid configuration');
   }
 
@@ -58,7 +64,11 @@ export const initConfigs = () => {
     twilio: {
       TWILIO_SID,
       TWILIO_TOKEN,
-      TWILIO_SERVICE,
+      TWILIO_VERIFY_SERVICE,
+      TWILIO_NOTIFY_SERVICE,
+    },
+    sqs: {
+      SQS_URL,
     },
   };
 };
