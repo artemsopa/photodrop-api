@@ -26,10 +26,11 @@ provider:
     JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
     JWT_TTL: ${env:JWT_TTL}
     S3_BUCKET: ${self:custom.BUCKET_NAME}
-    S3_REGION: ${self:provider.region}
     TWILIO_SID: ${env:TWILIO_SID}
     TWILIO_TOKEN: ${env:TWILIO_TOKEN}
-    TWILIO_SERVICE: ${env:TWILIO_SERVICE}
+    TWILIO_VERIFY_SERVICE: ${env:TWILIO_VERIFY_SERVICE}
+    TWILIO_NOTIFY_SERVICE: ${env:TWILIO_NOTIFY_SERVICE}
+    SQS_URL: { Ref: MessagesQueue }
 
   iam:
     role:
@@ -47,6 +48,13 @@ provider:
                   ["arn:aws:s3:::${self:custom.BUCKET_NAME}", "/*"],
                 ],
             }
+        
+        - Effect: "Allow"
+          Action:
+            - "sqs:SendMessage"
+            - "sqs:DeleteMessageBatch"
+          Resource: 
+            - Fn::GetAtt: [MessagesQueue, Arn]
 
 custom:
   BUCKET_NAME: photodrop-bucket-${self:provider.stage}
@@ -55,6 +63,7 @@ custom:
   DB_PASSWORD: ${env:DB_PASSWORD}
   DB_HOST: !GetAtt PostgreSqlRDSInstance.Endpoint.Address
   DB_PORT: !GetAtt PostgreSqlRDSInstance.Endpoint.Port
+  SQS_NAME: photodrop-queue-${self:provider.stage}
 
 functions:
   hello:
@@ -184,6 +193,15 @@ functions:
       - httpApi:
           path: /users/profile/avatar
           method: put
+  
+  notify:
+    handler: ./src/index.notify
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - MessagesQueue
+              - Arn
 
 resources:
   Resources:
@@ -214,3 +232,18 @@ resources:
         DBInstanceClass: db.t3.micro
         Engine: postgres
         PubliclyAccessible: true
+
+    MessagesQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.SQS_NAME}
+        RedrivePolicy:
+          deadLetterTargetArn: !GetAtt DeadLetterMessagesQueue.Arn
+          maxReceiveCount: 3
+        VisibilityTimeout: 120
+
+    DeadLetterMessagesQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:custom.SQS_NAME}-dead-letter
+        MessageRetentionPeriod: 604800
