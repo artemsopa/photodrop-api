@@ -5,21 +5,23 @@ import { Jwt } from '@/utils/Jwt';
 
 export const okResponse = (statusCode: number, body :any) => ({
   statusCode,
-  body: JSON.stringify(body, null, 2),
+  headers: { 'content-type': 'application/json' },
+  body: JSON.stringify(body),
 });
 
 export const errorResponse = (error: any) => {
   const res = {
     statusCode: 500,
-    body: JSON.stringify({ message: 'Internal Server Error!' }, null, 2),
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ message: 'Internal Server Error!' }),
   };
   if (error instanceof ApiError) {
     res.statusCode = error.status;
-    res.body = JSON.stringify({ message: error.message }, null, 2);
+    res.body = JSON.stringify({ message: error.message });
   }
   if (error instanceof ValidationError) {
     res.statusCode = 400;
-    res.body = JSON.stringify({ message: error.message }, null, 2);
+    res.body = JSON.stringify({ message: error.message });
   }
   return res;
 };
