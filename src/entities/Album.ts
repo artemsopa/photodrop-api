@@ -14,7 +14,7 @@ export class Album {
   @Column()
     location: string;
 
-  @Column({ name: 'date' })
+  @Column({ name: 'date', type: 'bigint' })
     date: number;
 
   @Column({ name: 'photographer_id' })
