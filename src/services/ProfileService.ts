@@ -1,4 +1,4 @@
-import { DataSource, Not } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { extension } from 'mime-types';
 import { Otp } from '@/utils/Otp';
@@ -26,16 +26,16 @@ export class ProfileService {
   public sendVerificationCode = async (id: string, phone: string) => {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
-    const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), phone } });
-    if (!user) throw ApiError.badRequest('Phone already in use');
+    const user = await this.ds.getRepository(User).findOne({ where: { phone } });
+    if (user) throw ApiError.badRequest('Phone already in use');
     await this.otp.sendCode(phone);
   };
 
   public updatePhone = async (id: string, phone: string, code: string) => {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
-    const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), phone } });
-    if (!user) throw ApiError.badRequest('Phone already in use');
+    const user = await this.ds.getRepository(User).findOne({ where: { phone } });
+    if (user) throw ApiError.badRequest('Phone already in use');
     await this.otp.verifyNumber(phone, code);
     await this.ds.getRepository(User).update({ id }, { phone });
   };
@@ -43,16 +43,14 @@ export class ProfileService {
   public updateEmail = async (id: string, email: string) => {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
-    const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), email } });
-    if (!user) throw ApiError.badRequest('Email already in use');
+    const user = await this.ds.getRepository(User).findOne({ where: { email } });
+    if (user) throw ApiError.badRequest('Email already in use');
     await this.ds.getRepository(User).update({ id }, { email });
   };
 
   public updateFullName = async (id: string, fullName: string) => {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
-    const user = await this.ds.getRepository(User).findOne({ where: { id: Not(id), fullName } });
-    if (!user) throw ApiError.badRequest('Full name already in use');
     await this.ds.getRepository(User).update({ id }, { fullName });
   };
 
