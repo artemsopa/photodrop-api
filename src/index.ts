@@ -7,6 +7,7 @@ import { Photo } from '@/entities/Photo';
 import { Order } from '@/entities/Order';
 import { User } from '@/entities/User';
 import { Bucket } from '@/utils/Bucket';
+import { Queue } from '@/utils/Queue';
 import { Otp } from '@/utils/Otp';
 import { Jwt } from '@/utils/Jwt';
 import { AuthService } from '@/services/AuthService';
@@ -16,6 +17,7 @@ import { OrderService } from '@/services/OrderService';
 import { OtpService } from '@/services/OtpService';
 import { ProfileService } from '@/services/ProfileService';
 import { GalleryService } from '@/services/GalleryService';
+import { NotifyService } from '@/services/NotifyService';
 import { AuthHandler } from '@/handlers/AuthHandler';
 import { AlbumHandler } from '@/handlers/AlbumHandler';
 import { PhotoHandler } from '@/handlers/PhotoHandler';
@@ -23,6 +25,7 @@ import { OrderHandler } from '@/handlers/OrderHandler';
 import { OtpHandler } from '@/handlers/OtpHandler';
 import { ProfileHandler } from '@/handlers/ProfileHandler';
 import { GalleryHandler } from '@/handlers/GaleryHandler';
+import { NotifyHandler } from '@/handlers/NotifyHandler';
 
 const configs = initConfigs();
 
@@ -42,19 +45,23 @@ const ds = new DataSource({
 const { JWT_SIGNING_KEY, JWT_TTL } = configs.jwt;
 const jwt = new Jwt(JWT_SIGNING_KEY, JWT_TTL);
 
-const { TWILIO_SID, TWILIO_TOKEN, TWILIO_SERVICE } = configs.twilio;
-const otp = new Otp(TWILIO_SERVICE, TWILIO_SID, TWILIO_TOKEN);
+const { TWILIO_SID, TWILIO_TOKEN, TWILIO_VERIFY_SERVICE, TWILIO_NOTIFY_SERVICE } = configs.twilio;
+const otp = new Otp(TWILIO_SID, TWILIO_TOKEN, TWILIO_VERIFY_SERVICE, TWILIO_NOTIFY_SERVICE);
 
-const { S3_REGION, S3_BUCKET } = configs.s3;
-const bucket = new Bucket(S3_BUCKET, S3_REGION);
+const { S3_BUCKET } = configs.s3;
+const bucket = new Bucket(S3_BUCKET);
+
+const { SQS_URL } = configs.sqs;
+const queue = new Queue(SQS_URL);
 
 const authService = new AuthService(ds, jwt);
 const albumService = new AlbumService(ds);
 const photoService = new PhotoService(ds, bucket);
-const orderService = new OrderService(ds);
+const orderService = new OrderService(ds, queue);
 const otpService = new OtpService(ds, jwt, otp);
 const profileService = new ProfileService(ds, otp, bucket);
 const galleryService = new GalleryService(ds, bucket);
+const notifyService = new NotifyService(ds, otp);
 
 const handlers = {
   ...new AuthHandler(authService),
@@ -64,6 +71,7 @@ const handlers = {
   ...new OtpHandler(otpService),
   ...new ProfileHandler(profileService, jwt),
   ...new GalleryHandler(galleryService, jwt),
+  ...new NotifyHandler(notifyService, queue),
 };
 
 export const {
@@ -86,4 +94,5 @@ export const {
   getGalleryByUser,
   getAllPhotosByGalleryAlbum,
   payForGalleryAlbum,
+  notify,
 } = handlers;
