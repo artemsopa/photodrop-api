@@ -25,10 +25,10 @@ export const errorResponse = (error: any) => {
 };
 
 export const getId = async (event: APIGatewayEvent, jwt: Jwt) => {
-  const authorization = event.headers.Authorization;
-  if (!authorization) throw ApiError.unauthorized('Empty "Athorization" header');
+  const header = event.headers.authorization;
+  if (!header) throw ApiError.unauthorized('Empty "Athorization" header');
 
-  const parts = authorization.split(' ');
+  const parts = header.split(' ');
   if (parts[0] !== 'Bearer' || !parts[1]) throw ApiError.unauthorized('Invalid "Authorization" header');
 
   const id = jwt.verifyToken(parts[1]);
