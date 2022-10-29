@@ -14,7 +14,7 @@ export class GalleryService {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     const data = await this.ds.getRepository(Order).createQueryBuilder('orders')
-      .leftJoinAndSelect('albums.orders', 'orders')
+      .leftJoinAndSelect('orders.album', 'albums')
       .leftJoinAndSelect('orders.photo', 'photos')
       .where('orders.user_id = :userId', { userId })
       .getMany();
@@ -65,7 +65,7 @@ export class GalleryService {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     const data = await this.ds.getRepository(Order).createQueryBuilder('orders')
-      .leftJoinAndSelect('albums.orders', 'orders')
+      .leftJoinAndSelect('orders.album', 'albums')
       .leftJoinAndSelect('orders.photo', 'photos')
       .where('orders.user_id = :userId', { userId })
       .andWhere('orders.album_id = :albumId', { albumId })
