@@ -14,42 +14,39 @@ export class Otp {
     this.notifyServiceId = notifyServiceId;
   }
 
-  public async sendCode(number: string) {
+  public sendCode = async (to: string) => {
     try {
       await this.client.verify.v2
         .services(this.verifyServiceId)
         .verifications.create({
-          to: number,
+          to,
           channel: 'sms',
         });
     } catch (e) {
       throw ApiError.badRequest('Wrong phone number');
     }
-  }
+  };
 
-  public async verifyNumber(number: string, code: string) {
+  public verifyNumber = async (to: string, code: string) => {
     try {
       await this.client.verify.v2
         .services(this.verifyServiceId)
         .verificationChecks.create({
-          to: number,
+          to,
           code,
         });
     } catch (e) {
       throw ApiError.badRequest('Wrong phone number or code');
     }
-  }
+  };
 
-  public async sendSms(number: string, body: string) {
-    try {
-      await this.client
-        .messages.create({
-          to: number,
-          body,
-          messagingServiceSid: this.notifyServiceId,
-        });
-    } catch (e) {
-      throw ApiError.badRequest('Cannot send sms. Check the phone number');
-    }
-  }
+  public sendSms = async (to: string, body: string) => {
+    const res = await this.client.messages
+      .create({
+        body,
+        messagingServiceSid: this.notifyServiceId,
+        to,
+      });
+    return res;
+  };
 }

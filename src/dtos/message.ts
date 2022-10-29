@@ -3,7 +3,7 @@ export interface Message {
   phones: string[],
 }
 
-export interface DequeuedMessages {
+export interface DequeuedMessage {
   id: string,
   receiptHandle: string,
   message: Message,

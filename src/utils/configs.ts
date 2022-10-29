@@ -13,7 +13,6 @@ export const initConfigs = () => {
     JWT_SIGNING_KEY,
     JWT_TTL,
 
-    S3_REGION,
     S3_BUCKET,
 
     TWILIO_SID,
@@ -33,7 +32,6 @@ export const initConfigs = () => {
       || !JWT_SIGNING_KEY
       || !JWT_TTL
 
-      || !S3_REGION
       || !S3_BUCKET
 
       || !TWILIO_SID
@@ -58,7 +56,6 @@ export const initConfigs = () => {
       JWT_TTL,
     },
     s3: {
-      S3_REGION,
       S3_BUCKET,
     },
     twilio: {

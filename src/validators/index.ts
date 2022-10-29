@@ -40,12 +40,7 @@ export const ordersInputSchema = yup.object({
   orders: yup.array(
     yup.object().shape({
       photoId: yup.string().required(),
-      users: yup.array(
-        yup.object({
-          userId: yup.string().required(),
-          phone: yup.string().required(),
-        }).required(),
-      ),
+      users: yup.array(yup.string().required()),
     }).required(),
   ).required(),
 });

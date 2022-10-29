@@ -15,9 +15,17 @@ export class NotifyService {
     const album = await this.ds.getRepository(Album).findOneBy({ id: message.albumId });
     if (!album) throw new Error('Unknown album');
 
-    message.phones.forEach(async (phone) => await this.otp.sendSms(
-      phone,
-      `Find new photos at "${album.title}" album!`,
-    ));
+    const promises = message.phones.map(async (phone) => {
+      try {
+        const res = await this.otp.sendSms(
+          phone,
+          `Find new photos at "${album.title}" album!`,
+        );
+        console.log(`${phone} sms status: ${res.status}`);
+      } catch (error) {
+        console.log(`${phone} sms status: failed`);
+      }
+    });
+    await Promise.all(promises);
   };
 }
