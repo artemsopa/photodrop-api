@@ -1,5 +1,5 @@
 import { SQS } from 'aws-sdk';
-import { DequeuedMessages, Message } from '@/dtos/message';
+import { DequeuedMessage, Message } from '@/dtos/message';
 
 export class Queue {
   private readonly sqs: SQS;
@@ -16,7 +16,7 @@ export class Queue {
       }).promise();
   }
 
-  async deleteMessages(deleteMessageRequests: DequeuedMessages[]): Promise<void> {
+  async deleteMessages(deleteMessageRequests: DequeuedMessage[]): Promise<void> {
     if (deleteMessageRequests.length <= 0) return;
     const result = await this.sqs
       .deleteMessageBatch({

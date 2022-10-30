@@ -7,6 +7,18 @@ export class Bucket {
     this.s3 = new S3();
   }
 
+  public getObject = async (key: string) => await this.s3.getObject({
+    Bucket: this.bucketName,
+    Key: key,
+  }).promise();
+
+  public putObject = async (key: string, buffer: Buffer, contentType: string) => await this.s3.putObject({
+    Bucket: this.bucketName,
+    Key: key,
+    Body: buffer,
+    ContentType: contentType,
+  }).promise();
+
   public getSignedUrlPutObject = async (key: string, contentType: string) => await this.s3.getSignedUrlPromise(
     'putObject',
     {
