@@ -8,7 +8,7 @@ export class Queue {
     this.url = url;
   }
 
-  async enqueueMessage(body: Message): Promise<void> {
+  async enqueueMessage(body: any): Promise<void> {
     await this.sqs
       .sendMessage({
         QueueUrl: this.url,
@@ -16,7 +16,7 @@ export class Queue {
       }).promise();
   }
 
-  async deleteMessages(deleteMessageRequests: DequeuedMessage[]): Promise<void> {
+  async deleteMessages(deleteMessageRequests: any[]): Promise<void> {
     if (deleteMessageRequests.length <= 0) return;
     const result = await this.sqs
       .deleteMessageBatch({
