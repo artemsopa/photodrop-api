@@ -5,6 +5,7 @@ import { DequeuedMessage, Message } from '@/dtos/message';
 
 export class NotifyHandler {
   constructor(private readonly service: NotifyService, private readonly queue: Queue) {
+    this.service = service;
     this.queue = queue;
   }
 
