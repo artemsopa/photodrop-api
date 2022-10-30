@@ -37,18 +37,16 @@ provider:
       statements:
         - Effect: Allow
           Action:
-            - s3:GetObject
-            - s3:PutObject
-            - s3:DeleteObject
-          Resource:
-            {
-              "Fn::Join":
-                [
-                  "arn:aws:s3:::${self:custom.BUCKET_NAME}",
-                  ["arn:aws:s3:::${self:custom.BUCKET_NAME}", "/*"],
-                ],
-            }
-        
+            - "s3:DeleteObject"
+            - "s3:GetObject"
+            - "s3:PutObject"
+          Resource: "arn:aws:s3:::${self:custom.BUCKET_NAME}/*"
+
+        - Effect: Allow
+          Action:
+            - "s3:ListBucket"
+          Resource: "arn:aws:s3:::${self:custom.BUCKET_NAME}"
+
         - Effect: "Allow"
           Action:
             - "sqs:SendMessage"
@@ -203,12 +201,23 @@ functions:
               - MessagesQueue
               - Arn
 
+  resize:
+    handler: ./src/index.resize
+    events:
+      - s3:
+          bucket: ${self:custom.BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: albums/
+          existing: true
+
 resources:
   Resources:
     S3Bucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.BUCKET_NAME}
+        AccessControl: PublicRead
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
@@ -221,6 +230,24 @@ resources:
                 - PUT
                 - DELETE
               MaxAge: 3000
+
+    S3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref S3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action:
+                - s3:ListBucket
+                - s3:DeleteObject
+                - s3:GetObject
+                - s3:PutObject
+              Resource:
+                - arn:aws:s3:::${self:custom.BUCKET_NAME}/*
+                - arn:aws:s3:::${self:custom.BUCKET_NAME}
     
     PostgreSqlRDSInstance:
       Type: AWS::RDS::DBInstance
