@@ -43,7 +43,7 @@ export class PhotoService {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     await this.bucket.isImageConentType(contentType);
-    const key = `albums/${photographerId}/${albumId}/${uuidv4()}.${extension(contentType)}`;
+    const key = `albums/${photographerId}/${albumId}/${uuidv4()}/original.${extension(contentType)}`;
     const url = await this.bucket.getSignedUrlPutObject(key, contentType);
     return {
       data: {

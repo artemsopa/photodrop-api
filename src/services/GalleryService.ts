@@ -37,7 +37,12 @@ export class GalleryService {
         photosMap.set(item.photoId, {
           id: item.id,
           isPaid: item.isPaid,
-          url: await this.bucket.getSignedUrlGetObject(item.photo.key),
+          url: await this.bucket.getSignedUrlGetObject(item.photo.key.replace(
+            /original/g,
+            photo.isPaid
+              ? 'thumbnail'
+              : 'thumbnail-watermark',
+          )),
           albumId: item.albumId,
         });
       }
@@ -45,14 +50,23 @@ export class GalleryService {
 
     const photosArr = Array.from(photosMap, ([name, value]) => (value));
 
-    const albums = Array.from(albumsMap, ([name, value]) => (value))
-      .map((album) => new AlbumInfo(
-        album.id,
-        photosArr.filter((photo) => photo.albumId === album.id)[Math.floor(Math.random() * photosArr.length)].url,
-        album.title,
-        album.location,
-        album.date,
-      ));
+    const albums = await Promise.all(
+      Array.from(albumsMap, ([name, value]) => (value))
+        .map(async (album) => new AlbumInfo(
+          album.id,
+          await this.bucket.getSignedUrlGetObject(
+            photosArr
+              .filter((photo) => photo.albumId === album.id)[Math.floor(Math.random() * photosArr.length)]
+              .key.replace(
+                /original/g,
+                'album-cover',
+              ),
+          ),
+          album.title,
+          album.location,
+          album.date,
+        )),
+    );
     const photos = photosArr.map((item) => new PhotoInfo(item.id, item.isPaid, item.url));
 
     return {
@@ -72,11 +86,29 @@ export class GalleryService {
       .getMany();
 
     const [{ album }] = data;
-    const photos = await Promise.all(data.map(async (item) => new PhotoInfo(
-      item.id,
-      item.isPaid,
-      await this.bucket.getSignedUrlGetObject(item.photo.key),
-    )));
+    const photos = await Promise.all(data.map(async (item) => ({
+      id: item.id,
+      smallUrl: await this.bucket.getSignedUrlGetObject(
+        item.isPaid
+          ? item.photo.key.replace(
+            /original/g,
+            'thumbnail',
+          ) : item.photo.key.replace(
+            /original/g,
+            'thumbnail-watermark',
+          ),
+      ),
+      largeUrl: await this.bucket.getSignedUrlGetObject(
+        item.isPaid
+          ? item.photo.key.replace(
+            /original/g,
+            'original',
+          ) : item.photo.key.replace(
+            /original/g,
+            'original-watermark',
+          ),
+      ),
+    })));
 
     return {
       id: album.id,
