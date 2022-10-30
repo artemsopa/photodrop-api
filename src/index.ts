@@ -26,6 +26,8 @@ import { OtpHandler } from '@/handlers/OtpHandler';
 import { ProfileHandler } from '@/handlers/ProfileHandler';
 import { GalleryHandler } from '@/handlers/GaleryHandler';
 import { NotifyHandler } from '@/handlers/NotifyHandler';
+import { ResizeHandler } from '@/handlers/ResizeHandler';
+import { ResizeService } from '@/services/ResizeService';
 
 const configs = initConfigs();
 
@@ -62,6 +64,7 @@ const otpService = new OtpService(ds, jwt, otp);
 const profileService = new ProfileService(ds, otp, bucket);
 const galleryService = new GalleryService(ds, bucket);
 const notifyService = new NotifyService(ds, otp);
+const resizeService = new ResizeService(bucket);
 
 const handlers = {
   ...new AuthHandler(authService),
@@ -72,6 +75,7 @@ const handlers = {
   ...new ProfileHandler(profileService, jwt),
   ...new GalleryHandler(galleryService, jwt),
   ...new NotifyHandler(notifyService, queue),
+  ...new ResizeHandler(resizeService),
 };
 
 export const {
@@ -95,4 +99,5 @@ export const {
   getAllPhotosByGalleryAlbum,
   payForGalleryAlbum,
   notify,
+  resize,
 } = handlers;
