@@ -21,6 +21,8 @@ export const initConfigs = () => {
     TWILIO_NOTIFY_SERVICE,
 
     SQS_URL,
+
+    LAMBDA_TASK_ROOT,
   } = process.env;
 
   if (!DB_HOST
@@ -39,7 +41,8 @@ export const initConfigs = () => {
       || !TWILIO_VERIFY_SERVICE
       || !TWILIO_NOTIFY_SERVICE
 
-      || !SQS_URL) {
+      || !SQS_URL
+      || !LAMBDA_TASK_ROOT) {
     throw new Error('ERROR! Invalid configuration');
   }
 
@@ -67,5 +70,6 @@ export const initConfigs = () => {
     sqs: {
       SQS_URL,
     },
+    dir: LAMBDA_TASK_ROOT,
   };
 };
