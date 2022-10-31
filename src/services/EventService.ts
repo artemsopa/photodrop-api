@@ -101,11 +101,11 @@ export class EventService {
 
     const promises = message.phones.map(async (phone) => {
       try {
-        // const res = await this.otp.sendSms(
-        //   phone,
-        //   `Find new photos at "${album.title}" album!`,
-        // );
-        console.log(`${phone} sms status: successfull`); // console.log(`${phone} sms status: ${res.status}`);
+        const res = await this.otp.sendSms(
+          phone,
+          `Find new photos at "${album.title}" album!`,
+        );
+        console.log(`${phone} sms status: ${res.status}`);
       } catch (error) {
         console.log(`${phone} sms status: failed`);
       }
