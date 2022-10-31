@@ -56,20 +56,22 @@ export class GalleryService {
 
     const albums = await Promise.all(
       Array.from(albumsMap, ([name, value]) => (value))
-        .map(async (album) => new AlbumInfo(
-          album.id,
-          await this.bucket.getSignedUrlGetObject(
-            photosArr
-              .filter((photo) => photo.albumId === album.id)[Math.floor(Math.random() * photosArr.length)]
-              .key.replace(
-                /original/g,
-                'album-cover',
-              ),
-          ),
-          album.title,
-          album.location,
-          album.date,
-        )),
+        .map(async (album) => {
+          const albumPhotos = photosArr.filter((photo) => photo.albumId === album.id);
+          return new AlbumInfo(
+            album.id,
+            await this.bucket.getSignedUrlGetObject(
+              albumPhotos[Math.floor(Math.random() * albumPhotos.length)]
+                .key.replace(
+                  /original/g,
+                  'album-cover',
+                ),
+            ),
+            album.title,
+            album.location,
+            album.date,
+          );
+        }),
     );
     const photos = photosArr.map((item) => ({ id: item.id, url: item.url }));
 
