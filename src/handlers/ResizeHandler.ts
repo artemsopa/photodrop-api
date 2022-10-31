@@ -7,10 +7,12 @@ export class ResizeHandler {
   }
 
   public resize = async (event: S3Event) => {
-    try {
-      await this.service.resize(event.Records[0]);
-    } catch (error) {
-      console.log(error);
-    }
+    event.Records.forEach(async (record) => {
+      try {
+        await this.service.resize(record);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 }
