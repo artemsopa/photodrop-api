@@ -1,6 +1,6 @@
 org: artemsopa
-app: photodrop
-service: photodrop-api
+app: photodrop-api-service
+service: photodrop-api-service
 frameworkVersion: '3'
 useDotenv: true
 
@@ -64,13 +64,6 @@ custom:
   SQS_NAME: photodrop-queue-${self:provider.stage}
 
 functions:
-  hello:
-    handler: ./src/index.hello
-    events:
-      - httpApi:
-          path: /hello
-          method: get
-
   login:
     handler: ./src/index.login
     events:
@@ -200,7 +193,6 @@ functions:
             Fn::GetAtt:
               - MessagesQueue
               - Arn
-
   resize:
     handler: ./src/index.resize
     events:
@@ -208,8 +200,12 @@ functions:
           bucket: ${self:custom.BUCKET_NAME}
           event: s3:ObjectCreated:*
           rules:
-            - prefix: albums/
+            - prefix: originals/
           existing: true
+
+package:
+  include:
+    - assets/**
 
 resources:
   Resources:
