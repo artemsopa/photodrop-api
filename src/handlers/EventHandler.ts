@@ -1,13 +1,24 @@
-import { SQSEvent } from 'aws-lambda';
+import { S3Event, SQSEvent } from 'aws-lambda';
+import { EventService } from '@/services/EventService';
 import { Queue } from '@/utils/Queue';
-import { NotifyService } from '@/services/NotifyService';
 import { DequeuedMessage, Message } from '@/dtos/message';
 
-export class NotifyHandler {
-  constructor(private readonly service: NotifyService, private readonly queue: Queue) {
+export class EventHandler {
+  constructor(private readonly service: EventService, private readonly queue: Queue) {
     this.service = service;
     this.queue = queue;
   }
+
+  public resize = async (event: S3Event) => {
+    const promises = event.Records.map(async (record) => {
+      try {
+        await this.service.resize(record);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    await Promise.all(promises);
+  };
 
   public notify = async (event: SQSEvent) => {
     const dequeuedMessages = this.mapEventToDequeuedMessages(event);

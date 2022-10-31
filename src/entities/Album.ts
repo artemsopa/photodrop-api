@@ -19,14 +19,14 @@ export class Album {
 
   @Column({ name: 'photographer_id' })
     photographerId: string;
-  @ManyToOne(() => Photographer, photographer => photographer.albums, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Photographer, (photographer) => photographer.albums, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'photographer_id' })
     photographer: Photographer;
 
-  @OneToMany(() => Photo, photo => photo.album)
+  @OneToMany(() => Photo, (photo) => photo.album)
     photos: Photo[];
 
-  @OneToMany(() => Order, order => order.album)
+  @OneToMany(() => Order, (order) => order.album)
     orders: Order[];
 
   constructor(title: string, location: string, date: number, photographerId: string) {

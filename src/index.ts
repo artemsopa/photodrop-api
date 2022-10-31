@@ -17,7 +17,6 @@ import { OrderService } from '@/services/OrderService';
 import { OtpService } from '@/services/OtpService';
 import { ProfileService } from '@/services/ProfileService';
 import { GalleryService } from '@/services/GalleryService';
-import { NotifyService } from '@/services/NotifyService';
 import { AuthHandler } from '@/handlers/AuthHandler';
 import { AlbumHandler } from '@/handlers/AlbumHandler';
 import { PhotoHandler } from '@/handlers/PhotoHandler';
@@ -25,9 +24,8 @@ import { OrderHandler } from '@/handlers/OrderHandler';
 import { OtpHandler } from '@/handlers/OtpHandler';
 import { ProfileHandler } from '@/handlers/ProfileHandler';
 import { GalleryHandler } from '@/handlers/GaleryHandler';
-import { NotifyHandler } from '@/handlers/NotifyHandler';
-import { ResizeHandler } from '@/handlers/ResizeHandler';
-import { ResizeService } from '@/services/ResizeService';
+import { EventService } from './services/EventService';
+import { EventHandler } from './handlers/EventHandler';
 
 const configs = initConfigs();
 
@@ -63,8 +61,7 @@ const orderService = new OrderService(ds, queue);
 const otpService = new OtpService(ds, jwt, otp);
 const profileService = new ProfileService(ds, otp, bucket);
 const galleryService = new GalleryService(ds, bucket);
-const notifyService = new NotifyService(ds, otp);
-const resizeService = new ResizeService(bucket);
+const eventService = new EventService(bucket, configs.dir, ds, otp);
 
 const handlers = {
   ...new AuthHandler(authService),
@@ -74,8 +71,7 @@ const handlers = {
   ...new OtpHandler(otpService),
   ...new ProfileHandler(profileService, jwt),
   ...new GalleryHandler(galleryService, jwt),
-  ...new NotifyHandler(notifyService, queue),
-  ...new ResizeHandler(resizeService),
+  ...new EventHandler(eventService, queue),
 };
 
 export const {

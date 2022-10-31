@@ -18,7 +18,7 @@ export class User {
   @Column({ type: String, nullable: true, unique: true })
     email: string | null;
 
-  @OneToMany(() => Order, order => order.user)
+  @OneToMany(() => Order, (order) => order.user)
     orders: Order[];
 
   constructor(phone: string) {

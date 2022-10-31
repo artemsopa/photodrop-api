@@ -37,13 +37,16 @@ export class GalleryService {
         photosMap.set(item.photoId, {
           id: item.id,
           isPaid: item.isPaid,
-          url: await this.bucket.getSignedUrlGetObject(item.photo.key
-            .replace(
-              /original/g,
-              photo.isPaid
-                ? 'thumbnail'
-                : 'thumbnail-watermark',
-            )),
+          key: item.photo.key,
+          url: await this.bucket.getSignedUrlGetObject(
+            item.photo.key
+              .replace(
+                /original/g,
+                item.isPaid
+                  ? 'thumbnail'
+                  : 'thumbnail-watermark',
+              ),
+          ),
           albumId: item.albumId,
         });
       }
@@ -68,7 +71,7 @@ export class GalleryService {
           album.date,
         )),
     );
-    const photos = photosArr.map((item) => new PhotoInfo(item.id, item.isPaid, item.url));
+    const photos = photosArr.map((item) => ({ id: item.id, url: item.url }));
 
     return {
       albums,

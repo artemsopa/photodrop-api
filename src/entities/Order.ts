@@ -14,25 +14,25 @@ export class Order {
 
   @Column({ name: 'photographer_id' })
     photographerId: string;
-  @ManyToOne(() => Photographer, photographer => photographer.orders, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Photographer, (photographer) => photographer.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'photographer_id' })
     photographer: Photographer;
 
   @Column({ name: 'album_id' })
     albumId: string;
-  @ManyToOne(() => Album, album => album.orders, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Album, (album) => album.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'album_id' })
     album: Album;
 
   @Column({ name: 'photo_id' })
     photoId: string;
-  @ManyToOne(() => Photo, photo => photo.orders, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Photo, (photo) => photo.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'photo_id' })
     photo: Photo;
 
   @Column({ name: 'user_id' })
     userId: string;
-  @ManyToOne(() => User, user => user.orders, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
     user: User;
 

@@ -20,7 +20,11 @@ export class PhotoService {
     const photos = await Promise.all(
       dataPhotos.map(async (item) => new PhotoItem(
         item.id,
-        await this.bucket.getSignedUrlGetObject(item.key),
+        await this.bucket.getSignedUrlGetObject(item.key
+          .replace(
+            /albums/g,
+            'originals',
+          )),
       )),
     );
 

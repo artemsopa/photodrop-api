@@ -20,13 +20,13 @@ export class Photographer {
   @Column({ type: String, nullable: true, unique: true })
     email: string | null;
 
-  @OneToMany(() => Album, album => album.photographer)
+  @OneToMany(() => Album, (album) => album.photographer)
     albums: Album[];
 
-  @OneToMany(() => Photo, photo => photo.photographer)
+  @OneToMany(() => Photo, (photo) => photo.photographer)
     photos: Photo[];
 
-  @OneToMany(() => Order, order => order.photographer)
+  @OneToMany(() => Order, (order) => order.photographer)
     orders: Order[];
 
   constructor(login: string, password: string, fullName: string | null, email: string | null) {
