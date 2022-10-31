@@ -37,12 +37,13 @@ export class GalleryService {
         photosMap.set(item.photoId, {
           id: item.id,
           isPaid: item.isPaid,
-          url: await this.bucket.getSignedUrlGetObject(item.photo.key.replace(
-            /original/g,
-            photo.isPaid
-              ? 'thumbnail'
-              : 'thumbnail-watermark',
-          )),
+          url: await this.bucket.getSignedUrlGetObject(item.photo.key
+            .replace(
+              /original/g,
+              photo.isPaid
+                ? 'thumbnail'
+                : 'thumbnail-watermark',
+            )),
           albumId: item.albumId,
         });
       }

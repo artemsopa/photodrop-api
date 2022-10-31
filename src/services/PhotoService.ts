@@ -43,7 +43,7 @@ export class PhotoService {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
     await this.bucket.isImageConentType(contentType);
-    const key = `albums/${photographerId}/${albumId}/${uuidv4()}/original.${extension(contentType)}`;
+    const key = `originals/${photographerId}/${albumId}/${uuidv4()}/original.${extension(contentType)}`;
     const url = await this.bucket.getSignedUrlPutObject(key, contentType);
     return {
       data: {
@@ -59,7 +59,7 @@ export class PhotoService {
   public createMany = async (photographerId: string, albumId: string, keys: string[]) => {
     if (!this.ds.manager.connection.isInitialized) await this.ds.initialize();
 
-    const photos = keys.map((key) => new Photo(key, albumId, photographerId));
+    const photos = keys.map((key) => new Photo(key.replace(/originals/g, 'albums'), albumId, photographerId));
     await this.ds.getRepository(Photo).save(photos);
   };
 }
